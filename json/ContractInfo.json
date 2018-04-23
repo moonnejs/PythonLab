@@ -1,0 +1,389 @@
+[
+    {
+        "name": "rb",
+        "mPrice": 1,
+        "mRate": 0.00010085,
+        "mRateT": 0.00010085,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "ni",
+        "mPrice": 1,
+        "mRate": 0.00010085,
+        "mRateT": 0.00010085,
+        "mMon": 0.01,
+        "mSize": 1,
+        "mLevel": 0.07
+    },
+    {
+        "name": "Ni",
+        "mPrice": 0.05,
+        "mRate": 0.00005085,
+        "mRateT": 0.000050085,
+        "mMon": 0.01,
+        "mSize": 1,
+        "mLevel": 0.07
+    },
+    {
+        "name": "au",
+        "mPrice": 0.005,
+        "mRate": 0.00004,
+        "mRateT": 0.0,
+        "mMon": 0.01,
+        "mSize": 1000,
+        "mLevel": 0.07
+    },
+    {
+        "name": "al",
+        "mPrice": 5,
+        "mRate": 0.00005,
+        "mRateT": 0.0,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "zn",
+        "mPrice": 5,
+        "mRate": 0.00004,
+        "mRateT": 0.0,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "ag",
+        "mPrice": 1,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "cu",
+        "mPrice": 10,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "pb",
+        "mPrice": 5,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "ru",
+        "mPrice": 5,
+        "mRate": 0.00004585,
+        "mRateT": 0.00004585,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "bu",
+        "mPrice": 2,
+        "mRate": 0.0001,
+        "mRateT": 0.0001,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "hc",
+        "mPrice": 1,
+        "mRate": 0.0001,
+        "mRateT": 0.0001,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "T",
+        "mPrice": 0.005,
+        "mRate": 0.000003,
+        "mRateT": 0.000003,
+        "mMon": 0.01,
+        "mSize": 10000,
+        "mLevel": 0.07
+    },
+    {
+        "name": "TF",
+        "mPrice": 0.005,
+        "mRate": 0.000003,
+        "mRateT": 0.000003,
+        "mMon": 0.01,
+        "mSize": 10000,
+        "mLevel": 0.07
+    },
+    {
+        "name": "pp",
+        "mPrice": 1,
+        "mRate": 0.00015,
+        "mRateT": 0.00015,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "l",
+        "mPrice": 5,
+        "mRate": 0.00007,
+        "mRateT": 0.00007,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "m",
+        "mPrice": 1,
+        "mRate": 0.00006,
+        "mRateT": 0.00006,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "c",
+        "mPrice": 1,
+        "mRate": 0.00007,
+        "mRateT": 0.00007,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "a",
+        "mPrice": 1,
+        "mRate": 0.00006,
+        "mRateT": 0.00006,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "cs",
+        "mPrice": 1,
+        "mRate": 0.00006,
+        "mRateT": 0.00006,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "i",
+        "mPrice": 0.5,
+        "mRate": 0.000045,
+        "mRateT": 0.000045,
+        "mMon": 0.01,
+        "mSize": 100,
+        "mLevel": 0.07
+    },
+    {
+        "name": "j",
+        "mPrice": 0.5,
+        "mRate": 0.0001,
+        "mRateT": 0.0001,
+        "mMon": 0.01,
+        "mSize": 100,
+        "mLevel": 0.07
+    },
+    {
+        "name": "jm",
+        "mPrice": 0.5,
+        "mRate": 0.0001,
+        "mRateT": 0.0001,
+        "mMon": 0.01,
+        "mSize": 60,
+        "mLevel": 0.07
+    },
+    {
+        "name": "jd",
+        "mPrice": 1,
+        "mRate": 0.00015,
+        "mRateT": 0.00015,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "p",
+        "mPrice": 2,
+        "mRate": 0.00006,
+        "mRateT": 0.00006,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "v",
+        "mPrice": 5,
+        "mRate": 0.00007,
+        "mRateT": 0.00007,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "SR",
+        "mPrice": 1,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "CF",
+        "mPrice": 5,
+        "mRate": 0.00008,
+        "mRateT": 0.00008,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "ZC",
+        "mPrice": 0.2,
+        "mRate": 0.00006,
+        "mRateT": 0.00006,
+        "mMon": 0.01,
+        "mSize": 100,
+        "mLevel": 0.07
+    },
+    {
+        "name": "FG",
+        "mPrice": 1,
+        "mRate": 0.00012,
+        "mRateT": 0.00012,
+        "mMon": 0.01,
+        "mSize": 20,
+        "mLevel": 0.07
+    },
+    {
+        "name": "TA",
+        "mPrice": 2,
+        "mRate": 0.00012,
+        "mRateT": 0.00012,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "MA",
+        "mPrice": 1,
+        "mRate": 0.00007,
+        "mRateT": 0.00007,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "WH",
+        "mPrice": 1,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 20,
+        "mLevel": 0.07
+    },
+    {
+        "name": "PM",
+        "mPrice": 1,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 50,
+        "mLevel": 0.07
+    },
+    {
+        "name": "RI",
+        "mPrice": 1,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 20,
+        "mLevel": 0.07
+    },
+    {
+        "name": "LR",
+        "mPrice": 1,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 20,
+        "mLevel": 0.07
+    },
+    {
+        "name": "JR",
+        "mPrice": 1,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 20,
+        "mLevel": 0.07
+    },
+    {
+        "name": "RS",
+        "mPrice": 1,
+        "mRate": 0.00004,
+        "mRateT": 0.00004,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "OI",
+        "mPrice": 2,
+        "mRate": 0.00003,
+        "mRateT": 0.00003,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "RM",
+        "mPrice": 1,
+        "mRate": 0.00012,
+        "mRateT": 0.00012,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    },
+    {
+        "name": "SM",
+        "mPrice": 2,
+        "mRate": 0.00008,
+        "mRateT": 0.00008,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "SF",
+        "mPrice": 2,
+        "mRate": 0.00005,
+        "mRateT": 0.00005,
+        "mMon": 0.01,
+        "mSize": 5,
+        "mLevel": 0.07
+    },
+    {
+        "name": "y",
+        "mPrice": 2,
+        "mRate": 0.00012,
+        "mRateT": 0.00012,
+        "mMon": 0.01,
+        "mSize": 10,
+        "mLevel": 0.07
+    }
+]

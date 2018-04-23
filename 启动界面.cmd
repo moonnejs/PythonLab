@@ -1,0 +1,2 @@
+python uiCtaWidget.py
+pause

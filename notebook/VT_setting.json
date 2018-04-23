@@ -1,0 +1,18 @@
+{
+	"fontFamily": "微软雅黑",
+	"fontSize": 12,
+
+	"mongoHost": "localhost",
+	"mongoPort": 27017,
+
+	"mcHost": "localhost",
+	"mcPort": 11210,
+
+	"phoneNumber": "",
+	"smsWarn": false,
+
+	"mongoHost0": "139.196.138.251",
+	"mongoPort0": 27017,
+
+	"darkStyle": true
+}
