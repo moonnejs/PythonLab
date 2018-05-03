@@ -81,6 +81,7 @@ class BacktestingEngine(object):
         self.leverage = {}                          # 保证金率
         self.slippage = {}                          # 回测时假设的滑点
         self.rate = {}                              # 回测时假设的佣金比例（适用于百分比佣金）
+        self.fee = {}                               # 回测时假设的固定佣金（适用于百分比佣金）
         self.size = {}                              # 合约大小，默认为1        
         self.mPrice = {}                            # 最小价格变动，默认为1        
         
@@ -727,7 +728,8 @@ class BacktestingEngine(object):
                 self.openPrice =  self.lastOpen.pop() if self.lastOpen else self.openPrice
                 size = self.size[self.symbolMap[self.strategy.vtSymbol]]
                 turnover = (abs(self.deal)+abs(self.openPrice))*size
-                commission = turnover*self.rate[self.symbolMap[self.strategy.vtSymbol]]
+                commission = turnover*self.rate[self.symbolMap[self.strategy.vtSymbol]]\
+                            +self.fee[self.symbolMap[self.strategy.vtSymbol]]
                 self.pnl += (-self.deal-self.openPrice)* size - commission
         else:
             self.lastOpen.insert(0,self.dealOpen)
@@ -974,12 +976,14 @@ class BacktestingEngine(object):
                     if exitTrade.volume == 0:
                         untraded = False
                     if exitTrade.dt not in pnlDict:
-                        pnlDict[exitTrade.dt] = TradingResult(entryTrade.price, entryTrade.dt, exitTrade.price,
-                                exitTrade.dt,-volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]])
+                        pnlDict[exitTrade.dt] = TradingResult(entryTrade.price, entryTrade.dt, exitTrade.price,exitTrade.dt,-volume,\
+                                self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]],\
+                                fee=self.fee[self.symbolMap[symbol]])
                         pnl = pnlDict[exitTrade.dt].pnl
                     else:
-                        pnlDict[exitTrade.dt].add(entryTrade.price, entryTrade.dt, exitTrade.price, 
-                                exitTrade.dt,-volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]])
+                        pnlDict[exitTrade.dt].add(entryTrade.price, entryTrade.dt, exitTrade.price, exitTrade.dt, -volume,\
+                                self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]],\
+                                fee=self.fee[self.symbolMap[symbol]])
                         pnl = pnlDict[exitTrade.dt].pnl
                 # 如果尚无空头交易
                 if untraded:
@@ -1001,12 +1005,14 @@ class BacktestingEngine(object):
                     if exitTrade.volume == 0:
                         untraded = False
                     if exitTrade.dt not in pnlDict:
-                        pnlDict[exitTrade.dt] = TradingResult(entryTrade.price, entryTrade.dt,exitTrade.price,
-                                exitTrade.dt, volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]])
+                        pnlDict[exitTrade.dt] = TradingResult(entryTrade.price, entryTrade.dt,exitTrade.price,exitTrade.dt,\
+                                volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]],\
+                                fee=self.fee[self.symbolMap[symbol]])
                         pnl = pnlDict[exitTrade.dt].pnl
                     else:
-                        pnlDict[exitTrade.dt].add(entryTrade.price, entryTrade.dt,exitTrade.price,
-                                exitTrade.dt, volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]])
+                        pnlDict[exitTrade.dt].add(entryTrade.price, entryTrade.dt,exitTrade.price,exitTrade.dt,\
+                            volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]],\
+                            fee=self.fee[self.symbolMap[symbol]])
                         pnl = pnlDict[exitTrade.dt].pnl
                 # 如果尚无多头交易
                 if untraded:
@@ -1024,11 +1030,13 @@ class BacktestingEngine(object):
                 exitPrice = self.bar[symbol].close
             if exitTime not in pnlDict:
                 pnlDict[exitTime] = TradingResult(entryTrade.price, entryTrade.dt, exitPrice, exitTime,
-                    -volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]])
+                    -volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]],\
+                            fee=self.fee[self.symbolMap[symbol]])
                 pnl = pnlDict[exitTime].pnl
             else:
                 pnlDict[exitTime].add(entryTrade.price, entryTrade.dt, exitPrice, exitTime,
-                    -volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]])
+                    -volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]],\
+                            fee=self.fee[self.symbolMap[symbol]])
                 pnl = pnlDict[exitTime].pnl
         while (longTrade):
             entryTrade = longTrade.popleft()
@@ -1043,11 +1051,13 @@ class BacktestingEngine(object):
 
             if exitTime not in pnlDict:
                 pnlDict[exitTime] = TradingResult(entryTrade.price, entryTrade.dt, exitPrice, exitTime,
-                    volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]])
+                    volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]],\
+                            fee=self.fee[self.symbolMap[symbol]])
                 pnl = pnlDict[exitTime].pnl
             else:
                 pnlDict[exitTime].add(entryTrade.price, entryTrade.dt,exitPrice, exitTime,
-                    volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]])
+                    volume, self.rate[self.symbolMap[symbol]], self.slippage, self.size[self.symbolMap[symbol]],\
+                            fee=self.fee[self.symbolMap[symbol]])
                 pnl = pnlDict[exitTime].pnl
 
         return pnlDict,resList
@@ -1370,7 +1380,7 @@ class TradingResult(object):
 
     #----------------------------------------------------------------------
     def __init__(self, entryPrice, entryDt, exitPrice, 
-                 exitDt, volume, rate, slippage, size):
+                 exitDt, volume, rate, slippage, size, fee = 0):
         """Constructor"""
         self.entryPrice = entryPrice    # 开仓价格
         self.exitPrice = exitPrice      # 平仓价格
@@ -1380,7 +1390,7 @@ class TradingResult(object):
         self.volume = volume            # 交易数量（+/-代表方向）
         
         self.turnover = (self.entryPrice+self.exitPrice)*size*abs(volume)   # 成交金额
-        self.commission = self.turnover*rate                                # 手续费成本
+        self.commission = self.turnover*rate + fee                          # 手续费成本
         self.slippage = slippage*2*size*abs(volume)                         # 滑点成本
         self.pnl = ((self.exitPrice - self.entryPrice) * volume * size 
                     - self.commission - self.slippage)                      # 净盈亏
@@ -1388,7 +1398,7 @@ class TradingResult(object):
 
     #----------------------------------------------------------------------
     def add(self, entryPrice, entryDt, exitPrice, 
-                 exitDt, volume, rate, slippage, size):
+                 exitDt, volume, rate, slippage, size, fee = 0):
         """Constructor"""
         self.entryPrice = entryPrice    # 开仓价格
         self.exitPrice = exitPrice      # 平仓价格
@@ -1399,7 +1409,7 @@ class TradingResult(object):
         
         turnover = (self.entryPrice+self.exitPrice)*size*abs(volume)   
         self.turnover += turnover                                           # 成交金额
-        commission = turnover*rate
+        commission = turnover*rate+fee
         self.commission += commission                                       # 手续费成本
         slippage0 = slippage*2*size*abs(volume)                         
         self.slippage += slippage0                                          # 滑点成本
@@ -1637,6 +1647,7 @@ def getSymbolInfo(symbolList):
     """获取合约信息"""
     import re
     rate  = {}
+    fee   = {}
     price = {}
     size  = {}
     level = {}
@@ -1649,6 +1660,7 @@ def getSymbolInfo(symbolList):
                 if match or match0:
                     rate[symbol]  = setting[u'mRate']
                     size[symbol]  = setting[u'mSize']
+                    fee[symbol]   = setting[u'mFee']
                     price[symbol] = setting[u'mPrice']
                     level[symbol] = setting[u'mLevel']
 
@@ -1661,12 +1673,13 @@ def getSymbolInfo(symbolList):
             price[symbol] = 0.01
             # ETF合约有更小的最小价格变动，并且没有印花税
             if name[0:2]=='15':
-                rate[symbol] = 0.00015
+                rate[symbol] = 0.0015
                 size[symbol] = 100
+                fee[symbol]  = 3
                 level[symbol] = 1
                 price[symbol] = 0.001
 
-    return rate,price,size,level
+    return rate,fee,price,size,level
     
 #---------------------------------------------------------------------------------------
 def backtestingRolling(setting_c, optimizationSetting, StartTime = '', EndTime = '', RollingDays=20, slippage = 0, optimism = False, mode = 'T', savedata = False):
@@ -1690,7 +1703,7 @@ def backtestingRolling(setting_c, optimizationSetting, StartTime = '', EndTime =
     timeList.append(dataEndDate)
 
     symbolList = eval(str(setting_c[u'symbolList']))
-    rate,price,size,level = getSymbolInfo(symbolList)
+    rate,fee,price,size,level = getSymbolInfo(symbolList)
 
     engine=BacktestingEngine()
     engine.optimism = optimism
@@ -1747,7 +1760,7 @@ def backtestingCpp(setting_c, StartTime = '', EndTime = '', slippage = 0, optimi
     reload(ctaSetting)
     STRATEGY_CLASS = ctaSetting.STRATEGY_CLASS
     symbolList = eval(str(setting_c[u'symbolList']))
-    rate,price,size,level = getSymbolInfo(symbolList)
+    rate,fee,price,size,level = getSymbolInfo(symbolList)
     sp = dict([(s,slippage) for s in symbolList])
 
     # 设置引擎的回测模式为TICK
@@ -1778,7 +1791,7 @@ def backtesting(setting_c, StartTime = '', EndTime = '', slippage = 0, optimism 
     className = setting_c[u'className']
     STRATEGY_CLASS = ctaSetting.STRATEGY_CLASS
     symbolList = eval(str(setting_c[u'symbolList']))
-    rate,price,size,level = getSymbolInfo(symbolList)
+    rate,fee,price,size,level = getSymbolInfo(symbolList)
 
     engine=BacktestingEngine()
     engine.optimism = optimism
@@ -1829,7 +1842,7 @@ def optimize(setting_c, setting,  startTime='', endTime='', slippage=0, optimism
         STRATEGY_CLASS = ctaSetting.STRATEGY_CLASS
 
         symbolList = eval(str(setting_c[u'symbolList']))
-        rate,price,size,level = getSymbolInfo(symbolList)
+        rate,fee,price,size,level = getSymbolInfo(symbolList)
             
         engine=BacktestingEngine()
         engine.plot = False

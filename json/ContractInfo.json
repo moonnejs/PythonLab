@@ -4,6 +4,7 @@
         "mPrice": 1,
         "mRate": 0.00010085,
         "mRateT": 0.00010085,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -13,6 +14,7 @@
         "mPrice": 1,
         "mRate": 0.00010085,
         "mRateT": 0.00010085,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 1,
         "mLevel": 0.07
@@ -22,6 +24,7 @@
         "mPrice": 0.05,
         "mRate": 0.00005085,
         "mRateT": 0.000050085,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 1,
         "mLevel": 0.07
@@ -31,6 +34,7 @@
         "mPrice": 0.005,
         "mRate": 0.00004,
         "mRateT": 0.0,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 1000,
         "mLevel": 0.07
@@ -40,6 +44,7 @@
         "mPrice": 5,
         "mRate": 0.00005,
         "mRateT": 0.0,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -49,6 +54,7 @@
         "mPrice": 5,
         "mRate": 0.00004,
         "mRateT": 0.0,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -58,6 +64,7 @@
         "mPrice": 1,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -67,6 +74,7 @@
         "mPrice": 10,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -76,6 +84,7 @@
         "mPrice": 5,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -85,6 +94,7 @@
         "mPrice": 5,
         "mRate": 0.00004585,
         "mRateT": 0.00004585,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -94,6 +104,7 @@
         "mPrice": 2,
         "mRate": 0.0001,
         "mRateT": 0.0001,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -103,6 +114,7 @@
         "mPrice": 1,
         "mRate": 0.0001,
         "mRateT": 0.0001,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -112,6 +124,7 @@
         "mPrice": 0.005,
         "mRate": 0.000003,
         "mRateT": 0.000003,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10000,
         "mLevel": 0.07
@@ -121,6 +134,7 @@
         "mPrice": 0.005,
         "mRate": 0.000003,
         "mRateT": 0.000003,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10000,
         "mLevel": 0.07
@@ -130,6 +144,7 @@
         "mPrice": 1,
         "mRate": 0.00015,
         "mRateT": 0.00015,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -139,6 +154,7 @@
         "mPrice": 5,
         "mRate": 0.00007,
         "mRateT": 0.00007,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -148,6 +164,7 @@
         "mPrice": 1,
         "mRate": 0.00006,
         "mRateT": 0.00006,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -157,6 +174,7 @@
         "mPrice": 1,
         "mRate": 0.00007,
         "mRateT": 0.00007,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -166,6 +184,7 @@
         "mPrice": 1,
         "mRate": 0.00006,
         "mRateT": 0.00006,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -175,6 +194,7 @@
         "mPrice": 1,
         "mRate": 0.00006,
         "mRateT": 0.00006,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -184,6 +204,7 @@
         "mPrice": 0.5,
         "mRate": 0.000045,
         "mRateT": 0.000045,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 100,
         "mLevel": 0.07
@@ -193,6 +214,7 @@
         "mPrice": 0.5,
         "mRate": 0.0001,
         "mRateT": 0.0001,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 100,
         "mLevel": 0.07
@@ -202,6 +224,7 @@
         "mPrice": 0.5,
         "mRate": 0.0001,
         "mRateT": 0.0001,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 60,
         "mLevel": 0.07
@@ -211,6 +234,7 @@
         "mPrice": 1,
         "mRate": 0.00015,
         "mRateT": 0.00015,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -220,6 +244,7 @@
         "mPrice": 2,
         "mRate": 0.00006,
         "mRateT": 0.00006,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -229,6 +254,7 @@
         "mPrice": 5,
         "mRate": 0.00007,
         "mRateT": 0.00007,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -238,6 +264,7 @@
         "mPrice": 1,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -247,6 +274,7 @@
         "mPrice": 5,
         "mRate": 0.00008,
         "mRateT": 0.00008,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -256,6 +284,7 @@
         "mPrice": 0.2,
         "mRate": 0.00006,
         "mRateT": 0.00006,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 100,
         "mLevel": 0.07
@@ -265,6 +294,7 @@
         "mPrice": 1,
         "mRate": 0.00012,
         "mRateT": 0.00012,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 20,
         "mLevel": 0.07
@@ -274,6 +304,7 @@
         "mPrice": 2,
         "mRate": 0.00012,
         "mRateT": 0.00012,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -283,6 +314,7 @@
         "mPrice": 1,
         "mRate": 0.00007,
         "mRateT": 0.00007,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -292,6 +324,7 @@
         "mPrice": 1,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 20,
         "mLevel": 0.07
@@ -301,6 +334,7 @@
         "mPrice": 1,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 50,
         "mLevel": 0.07
@@ -310,6 +344,7 @@
         "mPrice": 1,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 20,
         "mLevel": 0.07
@@ -319,6 +354,7 @@
         "mPrice": 1,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 20,
         "mLevel": 0.07
@@ -328,6 +364,7 @@
         "mPrice": 1,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 20,
         "mLevel": 0.07
@@ -337,6 +374,7 @@
         "mPrice": 1,
         "mRate": 0.00004,
         "mRateT": 0.00004,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -346,6 +384,7 @@
         "mPrice": 2,
         "mRate": 0.00003,
         "mRateT": 0.00003,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -355,6 +394,7 @@
         "mPrice": 1,
         "mRate": 0.00012,
         "mRateT": 0.00012,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
@@ -364,6 +404,7 @@
         "mPrice": 2,
         "mRate": 0.00008,
         "mRateT": 0.00008,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -373,6 +414,7 @@
         "mPrice": 2,
         "mRate": 0.00005,
         "mRateT": 0.00005,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 5,
         "mLevel": 0.07
@@ -382,6 +424,7 @@
         "mPrice": 2,
         "mRate": 0.00012,
         "mRateT": 0.00012,
+        "mFee": 0.0,
         "mMon": 0.01,
         "mSize": 10,
         "mLevel": 0.07
