@@ -218,7 +218,7 @@ class BacktestingEngine(object):
                 data = dataClass()
                 data.__dict__ = dbCursor[symbol].next()
                 # 为了弥补数据错误，需要删除
-                data.datetime += timedelta(hours=8)
+                data.datetime += timedelta(hours=0)
                 backtestingData[symbol].append(data)
                 self.symbolMap[data.symbol] = symbol
                 index[symbol] += 1
