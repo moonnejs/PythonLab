@@ -867,23 +867,23 @@ class BacktestingEngine(object):
                         if orderID not in self.orderVolume: 
                             if order.price == tick.bidPrice1 and order.direction==DIRECTION_LONG:
                                 self.orderVolume[orderID] = tick.bidVolume1 
-                            elif order.price == tick.bidPrice2 and order.direction==DIRECTION_LONG and bidVolume2 > 0:
+                            elif order.price == tick.bidPrice2 and order.direction==DIRECTION_LONG and tick.bidVolume2 > 0:
                                 self.orderVolume[orderID] = tick.bidVolume2 
-                            elif order.price == tick.bidPrice3 and order.direction==DIRECTION_LONG and bidVolume3 > 0:
+                            elif order.price == tick.bidPrice3 and order.direction==DIRECTION_LONG and tick.bidVolume3 > 0:
                                 self.orderVolume[orderID] = tick.bidVolume3 
-                            elif order.price == tick.bidPrice4 and order.direction==DIRECTION_LONG and bidVolume4 > 0:
+                            elif order.price == tick.bidPrice4 and order.direction==DIRECTION_LONG and tick.bidVolume4 > 0:
                                 self.orderVolume[orderID] = tick.bidVolume4 
-                            elif order.price == tick.bidPrice5 and order.direction==DIRECTION_LONG and bidVolume5 > 0:
+                            elif order.price == tick.bidPrice5 and order.direction==DIRECTION_LONG and tick.bidVolume5 > 0:
                                 self.orderVolume[orderID] = tick.bidVolume5 
                             elif order.price == tick.askPrice1 and order.direction==DIRECTION_SHORT:
                                 self.orderVolume[orderID] = tick.askVolume1                         
-                            elif order.price == tick.askPrice2 and order.direction==DIRECTION_SHORT and askVolume2 > 0:
+                            elif order.price == tick.askPrice2 and order.direction==DIRECTION_SHORT and tick.askVolume2 > 0:
                                 self.orderVolume[orderID] = tick.askVolume2                         
-                            elif order.price == tick.askPrice3 and order.direction==DIRECTION_SHORT and askVolume3 > 0:
+                            elif order.price == tick.askPrice3 and order.direction==DIRECTION_SHORT and tick.askVolume3 > 0:
                                 self.orderVolume[orderID] = tick.askVolume3                         
-                            elif order.price == tick.askPrice4 and order.direction==DIRECTION_SHORT and askVolume4 > 0:
+                            elif order.price == tick.askPrice4 and order.direction==DIRECTION_SHORT and tick.askVolume4 > 0:
                                 self.orderVolume[orderID] = tick.askVolume4                         
-                            elif order.price == tick.askPrice5 and order.direction==DIRECTION_SHORT and askVolume5 > 0:
+                            elif order.price == tick.askPrice5 and order.direction==DIRECTION_SHORT and tick.askVolume5 > 0:
                                 self.orderVolume[orderID] = tick.askVolume5
                         # 首先排队进入，然后被打穿
                         elif (order.price > sellCrossPrice and order.direction==DIRECTION_LONG) or\
@@ -899,23 +899,23 @@ class BacktestingEngine(object):
                         self.orderPrice[orderID] = order.price
                         if order.price == tick.bidPrice1 and order.direction==DIRECTION_LONG:
                             self.orderVolume[orderID] = tick.bidVolume1 
-                        elif order.price == tick.bidPrice2 and order.direction==DIRECTION_LONG and bidVolume2 > 0:
+                        elif order.price == tick.bidPrice2 and order.direction==DIRECTION_LONG and tick.bidVolume2 > 0:
                             self.orderVolume[orderID] = tick.bidVolume2                                            
-                        elif order.price == tick.bidPrice3 and order.direction==DIRECTION_LONG and bidVolume3 > 0:
+                        elif order.price == tick.bidPrice3 and order.direction==DIRECTION_LONG and tick.bidVolume3 > 0:
                             self.orderVolume[orderID] = tick.bidVolume3                                            
-                        elif order.price == tick.bidPrice4 and order.direction==DIRECTION_LONG and bidVolume4 > 0:
+                        elif order.price == tick.bidPrice4 and order.direction==DIRECTION_LONG and tick.bidVolume4 > 0:
                             self.orderVolume[orderID] = tick.bidVolume4                                            
-                        elif order.price == tick.bidPrice5 and order.direction==DIRECTION_LONG and bidVolume5 > 0:
+                        elif order.price == tick.bidPrice5 and order.direction==DIRECTION_LONG and tick.bidVolume5 > 0:
                             self.orderVolume[orderID] = tick.bidVolume5 
                         elif order.price == tick.askPrice1 and order.direction==DIRECTION_SHORT:
                             self.orderVolume[orderID] = tick.askVolume1
-                        elif order.price == tick.askPrice2 and order.direction==DIRECTION_SHORT and askVolume2 > 0:
+                        elif order.price == tick.askPrice2 and order.direction==DIRECTION_SHORT and tick.askVolume2 > 0:
                             self.orderVolume[orderID] = tick.askVolume2                         
-                        elif order.price == tick.askPrice3 and order.direction==DIRECTION_SHORT and askVolume3 > 0:
+                        elif order.price == tick.askPrice3 and order.direction==DIRECTION_SHORT and tick.askVolume3 > 0:
                             self.orderVolume[orderID] = tick.askVolume3                         
-                        elif order.price == tick.askPrice4 and order.direction==DIRECTION_SHORT and askVolume4 > 0:
+                        elif order.price == tick.askPrice4 and order.direction==DIRECTION_SHORT and tick.askVolume4 > 0:
                             self.orderVolume[orderID] = tick.askVolume4                         
-                        elif order.price == tick.askPrice5 and order.direction==DIRECTION_SHORT and askVolume5 > 0:
+                        elif order.price == tick.askPrice5 and order.direction==DIRECTION_SHORT and tick.askVolume5 > 0:
                             self.orderVolume[orderID] = tick.askVolume5
 
                     # 排队成交，注意，目前简单一次性全部成交！！
