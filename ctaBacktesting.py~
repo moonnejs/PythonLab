@@ -1826,6 +1826,7 @@ def backtesting(setting_c, StartTime = '', EndTime = '', slippage = 0, optimism 
     # 设置产品相关参数
     engine.setSlippage(slippage)     # 滑点
     engine.setRate(rate)             # 手续费
+    engine.setFee(fee)               # 手续费
     engine.setSize(size)             # 合约乘数    
     engine.setPrice(price)           # 最小价格变动    
     engine.setLeverage(level)        # 合约保证金    
@@ -1878,6 +1879,7 @@ def optimize(setting_c, setting,  startTime='', endTime='', slippage=0, optimism
         # 设置产品相关参数
         engine.setSlippage(slippage)   # 滑点
         engine.setRate(rate)           # 手续费
+        engine.setFee(fee)               # 手续费
         engine.setSize(size)           # 合约大小    
         engine.setPrice(price)         # 最小价格变动     
         engine.setLeverage(level)      # 合约杠杆    
