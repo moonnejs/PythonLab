@@ -70,7 +70,7 @@ class DMAStrategy(CtaTemplate):
         """Constructor"""
         super(DMAStrategy, self).__init__(ctaEngine,setting)
 
-        self.widgetClass = KLWidget
+        self.widgetClass = None
         self.widget = None
 
         self.bm = BarManager(self.onBar,self.nMin)
