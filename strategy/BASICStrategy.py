@@ -49,7 +49,7 @@ class BASICStrategy(CtaTemplate):
     #----------------------------------------------------------------------
     def onTick(self, tick):
         """收到行情TICK推送（必须由用户继承实现）"""
-        super(BASICStrategy, self).onTick()
+        super(BASICStrategy, self).onTick(tick)
         self.bm.updateTick(tick)
 
     #----------------------------------------------------------------------
