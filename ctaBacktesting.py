@@ -1672,15 +1672,16 @@ def getSymbolInfo(symbolList):
     for symbol in symbolList:
         if symbol not in rate:
             print(u'未找到%s合约手续费信息，按股票合约处理' %(symbol))
-            rate[symbol]  = 0.0008
+            rate[symbol]  = 0.0003
             size[symbol]  = 1
             level[symbol] = 1
+            fee[symbol]  = 3
             price[symbol] = 0.01
             # ETF合约有更小的最小价格变动，并且没有印花税
             if name[0:2]=='15':
-                rate[symbol] = 0.0015
+                rate[symbol] = 0.0003
                 size[symbol] = 100
-                fee[symbol]  = 3
+                fee[symbol]  = 0
                 level[symbol] = 1
                 price[symbol] = 0.001
 
