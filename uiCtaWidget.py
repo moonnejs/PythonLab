@@ -509,7 +509,10 @@ class StrategyParamManager(BasicDialog):
         xMin      = str(self.periodType.currentText())
         mode      = self.getBtMode()
         symbol    = self.ctaEngine.getStrategyParam(self.name).get('vtSymbol')
-        generateXbars(symbol, startTime, endTime, xMin, mode)
+        if xMin == '':
+            loadHistoryBarByTick(TICK_DB_NAME, symbol, start=startTime, end=endTime, nMin = 1)
+        else:
+            generateXbars(symbol, startTime, endTime, xMin, mode)
 
     #----------------------------------------------------------------------
     def btAll(self):
