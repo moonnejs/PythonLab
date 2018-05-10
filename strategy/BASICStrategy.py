@@ -38,6 +38,8 @@ class BASICStrategy(CtaTemplate):
         """Constructor"""
         super(BASICStrategy, self).__init__(ctaEngine,setting)
         
+        self.V = 1
+        
         # 创建K线合成器对象
         self.bm = BarManager(self.onBar,self.nMin)
 

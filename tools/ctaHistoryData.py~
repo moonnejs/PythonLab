@@ -535,7 +535,7 @@ def bar2xbars(bars,xmin):
             yield xminBar
             
             # 清空老K线缓存对象
-            self.xminBar = None
+            xminBar = None
 
 #---------------------------------------------------------------------------------------
 def getDbByMode(mode):
