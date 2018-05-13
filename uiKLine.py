@@ -316,16 +316,6 @@ class KLineWidget(KeyWraper):
     # 窗口标识
     clsId = 0
 
-    # 保存K线数据的列表和Numpy Array对象
-    listBar      = []
-    listVol      = []
-    listHigh     = []
-    listLow      = []
-    listSig      = []
-    listOpenSig  = []
-    listOpenInterest = []
-    arrows   = []
-
     # 是否完成了历史数据的读取
     initCompleted = False
     
@@ -346,8 +336,6 @@ class KLineWidget(KeyWraper):
         self.datas    = []
         self.listBar  = []
         self.listVol  = []
-        self.listHigh = []
-        self.listLow  = []
         self.listSig  = []
         self.listOpenSig  = []
         self.listOpenInterest = []
@@ -713,8 +701,6 @@ class KLineWidget(KeyWraper):
         self.time_index = []
         self.listBar = []
         self.listVol = []
-        self.listLow = []
-        self.listHigh = []
         self.listOpenInterest = []
         self.listSig = []
         self.listOpenSig = []
@@ -762,8 +748,6 @@ class KLineWidget(KeyWraper):
         elif any(self.datas):
             self.listSig.pop()
             self.listOpenSig.pop()
-            self.listLow.pop()
-            self.listHigh.pop()
             self.listOpenInterest.pop()
         if any(self.datas):
             self.datas[-1]   = (bar.datetime, bar.open, bar.close, bar.low, bar.high, bar.volume, bar.openInterest)
@@ -780,8 +764,6 @@ class KLineWidget(KeyWraper):
         self.axisTime.update_xdict({nrecords:bar.datetime})
         self.listSig.append(sig)
         self.listOpenSig.append(sig)
-        self.listLow.append(bar.low)
-        self.listHigh.append(bar.high)
         self.listOpenInterest.append(bar.openInterest)
         self.resignData(self.datas)
         nWindow0 = min(nrecords,nWindow)
@@ -810,8 +792,6 @@ class KLineWidget(KeyWraper):
         self.resignData(self.datas)
         # 更新画图用到的数据
         self.listBar          = datas[['time_int','open','close','low','high']].to_records(False)
-        self.listHigh         = list(datas['high'])
-        self.listLow          = list(datas['low'])
         self.listOpenInterest = list(datas['openInterest'])
         self.listSig          = [0]*len(self.datas) if sigs is None else sigs
         self.listOpenSig      = [0]*len(self.datas) if sigs is None else sigs
