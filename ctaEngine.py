@@ -120,7 +120,8 @@ class CtaEngine(object):
 	        if setting[u'name'] == name:
 	            setting_bt = setting
         q = True if mode[0:2] == 'BV' else False
-        t = ctaTaskPool.taskPool.addTask('bt',args=(setting_bt, startTime, endTime, slippage, self.optimism, mode, q), runmode = mode)
+        xmode = 'bt-perf' if mode[0:2] in ['BP','BT'] else 'bt-f' 
+        t = ctaTaskPool.taskPool.addTask('bt',args=(setting_bt, startTime, endTime, slippage, self.optimism, mode, q), mode = xmode, runmode = mode)
 
     #----------------------------------------------------------------------
     def backtestRollingStrategy(self, name, optimizationSetting, startTime = '20161001', endTime = '20161030', rollingDays=20, slippage = 0, mode = 'T'):

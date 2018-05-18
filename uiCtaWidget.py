@@ -424,11 +424,11 @@ class StrategyParamManager(BasicDialog):
         """初始化界面"""
         self.setWindowTitle(u'策略参数')
         #self.setMaximumHeight(250)
-        
+        allModes = ['TICK','TICK(PERF)','BAR','BAR(PERF)','BAR(DISPLAY)']
         gridlayout = QtGui.QGridLayout()
         self.startEdit  = self.gridAddLineEditV(gridlayout,u'开始时间',0)
         self.endEdit    = self.gridAddLineEditV(gridlayout,u'结束时间',1)
-        self.modeType   = self.gridAddComboBoxV(gridlayout,u'回测模式',['TICK','BAR','BAR(DISPLAY)'],2)
+        self.modeType   = self.gridAddComboBoxV(gridlayout,u'回测模式',allModes,2)
         self.periodType = self.gridAddComboBoxV(gridlayout,u'周期',['','5','15','25','60','D'],3)
         self.spEdit     = self.gridAddLineEditV(gridlayout,u'策略滑点',4)
 
@@ -483,8 +483,12 @@ class StrategyParamManager(BasicDialog):
         pType = str(self.periodType.currentText())
         if str(self.modeType.currentText()) == 'TICK':
             mode = 'T'+pType
+        elif str(self.modeType.currentText()) == 'TICK(PERF)':
+            mode = 'TP'+pType
         elif str(self.modeType.currentText()) == 'BAR':
             mode = 'B'+pType
+        elif str(self.modeType.currentText()) == 'BAR(PERF)':
+            mode = 'BP'+pType
         elif str(self.modeType.currentText()) == 'BAR(DISPLAY)':
             mode = 'BV'+pType
         return mode

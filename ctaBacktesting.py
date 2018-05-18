@@ -1643,7 +1643,7 @@ def getDbByMode(mode):
     with open("./json/DATA_setting.json") as f:
         for setting in json.load(f):
              mode0 = setting[u'mode']
-             if mode == mode0:
+             if mode in mode0:
                  return setting[u'dbname']
     return "VnTrader_1Min_Db"
 
