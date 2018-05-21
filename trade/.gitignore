@@ -1,5 +1,5 @@
 *.pyc
 *.pyo
 *.swp
-*.un~
-*~
+/log/
+/trade/
