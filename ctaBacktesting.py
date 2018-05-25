@@ -91,13 +91,12 @@ class BacktestingEngine(object):
         self.dbCursor_count = {}                    # 数据库大小
         
         self.backtestingData = {}                   # 回测用的数据,deque([])
-        self.savedata =  False                      # 保存外部数据
-        self.datas =  None                          # 外部数据
+        self.savedata = False                      # 保存外部数据
+        self.datas = None                          # 外部数据
 
         self.dataStartDate = None                   # 回测数据开始日期，datetime对象
         self.dataEndDate = None                     # 回测数据结束日期，datetime对象
         self.strategyStartDate = None               # 策略启动日期（即前面的数据用于初始化），datetime对象
-
 
         # 本地停止单
         self.stopOrderCount = 0                     # 编号计数：stopOrderID = STOPORDERPREFIX + str(stopOrderCount)
@@ -141,38 +140,38 @@ class BacktestingEngine(object):
         self.lastbar = {}                           # 上一个bar
         self.dt = None                              # 最新的时间
         
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def setStartDate(self, startDate='20100416', initDays=10):
         """设置回测的启动日期
            支持两种日期模式"""
         self.dataStartDate = datetime.strptime(startDate, '%Y%m%d') if len(startDate) == 8\
                         else datetime.strptime(startDate, '%Y%m%d %H:%M:%S')
         
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def setEndDate(self, endDate='20100416'):
         """设置回测的结束日期
            支持两种日期模式"""
         self.dataEndDate= datetime.strptime(endDate, '%Y%m%d') if len(endDate) == 8\
                      else datetime.strptime(endDate, '%Y%m%d %H:%M:%S')
         
-    #---------------------------------------------------------------------
+    # ---------------------------------------------------------------------
     def setBacktestingMode(self, mode):
         """设置回测模式"""
         self.mode = mode
         self.dataClass = CtaBarData if self.mode == self.BAR_MODE\
                     else CtaTickData
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def loadRefData(self, dbName):
         """载入参考数据"""
         self.output(u' ')
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def getHistData(self):
         """获取参考数据"""
         self.output(u' ')
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def loadHistoryData(self, dbName, symbolList):
         """载入历史数据"""
         self.symbolList = symbolList
@@ -202,7 +201,7 @@ class BacktestingEngine(object):
 
         self.output(u' ')
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def prepareData(self):
         """数据准备线程"""
         # 快速读取
@@ -224,7 +223,7 @@ class BacktestingEngine(object):
                 index[symbol] += 1
         map(fillData,self.symbolList)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def runBacktesting(self):
         """运行回测"""
 
@@ -242,12 +241,12 @@ class BacktestingEngine(object):
         backtestingData = self.backtestingData
 
         #检查是否回测完成
-        #----------------------------------------------------------
+        # ----------------------------------------------------------
         def backtestFinished():
             return any(((index[s] >= dbCursor_count[s] and not backtestingData[s]) for s in index))
 
         #检查是否存在缓存数据
-        #----------------------------------------------------------
+        # ----------------------------------------------------------
         def hasCacheData():
             return all([backtestingData[s] for s in index]) 
 
@@ -286,7 +285,7 @@ class BacktestingEngine(object):
         self.output(u'数据回放结束')
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def dataProduced(self):
         """准备推送的数据"""
         if self.strategy is None:
@@ -304,7 +303,7 @@ class BacktestingEngine(object):
         self.dealOpen = 0
         self.pnl = 0
         
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def newBar(self, bar):
         """新的K线"""
         self.dt = bar.values()[0].datetime
@@ -639,7 +638,7 @@ class BacktestingEngine(object):
             volOnBid = 0
         return volOnBid,volOnAsk,pOnBid,pOnAsk
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def removeOrder(self, orderID):
         """清除订单信息"""
         if orderID in self.workingLimitOrderDict:
@@ -649,7 +648,7 @@ class BacktestingEngine(object):
         if orderID in self.orderVolume:
             del self.orderVolume[orderID]
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def snapMarket(self, tradeID):
         """快照市场"""
         if self.mode == self.TICK_MODE:
@@ -657,7 +656,7 @@ class BacktestingEngine(object):
         else:
             self.tradeSnap[tradeID] = copy.copy(self.bar)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def strategyOnOrder(self, order, volumeTraded):
         """处理委托回报"""
         orderID = order.orderID
@@ -695,7 +694,7 @@ class BacktestingEngine(object):
             self.strategy.onOrder(order)
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def strategyOnTrade(self, order, volumeTraded, priceTraded):
         """处理成交回报"""
         if volumeTraded<=0:
@@ -737,7 +736,7 @@ class BacktestingEngine(object):
         # self.snapMarket(tradeID)
         self.tradeDict[trade.vtSymbol][tradeID] = trade
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def updateLimitOrder(self,symbol):
         """基于最新数据撮合限价单"""
         # 遍历限价单字典中的所有限价单
@@ -752,7 +751,7 @@ class BacktestingEngine(object):
                     self.orderPrice[orderID] = order.price
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def crossStopOrder(self,symbol):
         """基于最新数据撮合停止单"""
         tick     = self.tick.get(symbol)
@@ -794,7 +793,7 @@ class BacktestingEngine(object):
                     self.strategy.onStopOrder(so)
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def crossLimitOrder(self,symbol):
         """基于最新数据撮合限价单"""
         # 缓存数据
@@ -933,18 +932,18 @@ class BacktestingEngine(object):
                         # 从字典中删除该限价单
                         self.removeOrder(orderID)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def insertData(self, dbName, collectionName, data):
         """考虑到回测中不允许向数据库插入数据，防止实盘交易中的一些代码出错"""
         pass
     
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def writeCtaLog(self, content):
         """记录日志"""
         log = str(self.dt) + ' ' + content 
         self.logList.append(log)
         
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def output(self, content):
         """输出内容"""
         self.logList.append(str(content))
@@ -953,7 +952,7 @@ class BacktestingEngine(object):
         elif self.plot:
             print content
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def crossTrade2PNL(self, dict_trade, pnlDict, resList):
         """逐比对冲成交回报"""
         longTrade = deque([])        # 未平仓的多头交易
@@ -1063,7 +1062,7 @@ class BacktestingEngine(object):
         return pnlDict,resList
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def calculateBacktestingResult(self, detial = False):
         """
         计算回测结果

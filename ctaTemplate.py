@@ -787,25 +787,34 @@ class ArrayManager(object):
     #----------------------------------------------------------------------
     def llv(self, n, array=False):
         """移动最低"""
-        result = talib.MAX(self.high, n)
+        result = talib.MIN(self.low, n)
         if array:
             return result
         return result[-1]
-        
+
     #----------------------------------------------------------------------
     def kdj(self, n, s, f, array=False):
         """KDJ指标"""
         c   = self.close
-        hhv = self.hhv(n)
-        llv = self.llv(n)
+        hhv = self.hhv(n,True)
+        llv = self.llv(n,True)
         shl = talib.SUM(hhv-llv,s)
         scl = talib.SUM(c-llv,s)
-        k   = 100*shl/scl
+        k   = 100*scl/shl
         d   = talib.SMA(k,f)
         j   = 3*k - 2*d
         if array:
             return k,d,j
         return k[-1],d[-1],j[-1]
+        
+    #----------------------------------------------------------------------
+    def macdext(self, fastPeriod, slowPeriod, signalPeriod, array=False):
+        """MACD指标"""
+        macd, signal, hist = talib.MACDEXT(self.close, fastPeriod,1,
+                                        slowPeriod,1, signalPeriod,1)
+        if array:
+            return macd, signal, hist*2
+        return macd[-1], signal[-1], hist[-1]*2
         
     #----------------------------------------------------------------------
     def sma(self, n, array=False):
