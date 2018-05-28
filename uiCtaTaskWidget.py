@@ -6,6 +6,7 @@ import ctaTaskPool
 import pandas as pd
 from eventEngine import *
 from uiBasicWidget import QtGui, QtCore, BASIC_FONT, BasicDialog
+from qtpy.QtWidgets import *
 
 STYLESHEET_START = 'background-color: rgb(111,255,244); color: black'
 STYLESHEET_STOP  = 'background-color: rgb(255,201,111); color: black'
@@ -20,7 +21,7 @@ except AttributeError:
 
 kLoader = None
 ########################################################################
-class TaskActiveButton(QtGui.QPushButton):
+class TaskActiveButton(QPushButton):
     """激活按钮"""
     #----------------------------------------------------------------------
     def __init__(self, taskName='', parent=None):
@@ -68,7 +69,7 @@ class TaskActiveButton(QtGui.QPushButton):
         self.setStyleSheet(STYLESHEET_STOP)
     
 ########################################################################
-class TaskDisplayButton(QtGui.QPushButton):
+class TaskDisplayButton(QPushButton):
     """显示回测结果"""
     #----------------------------------------------------------------------
     def __init__(self, taskName='', parent=None):
@@ -91,7 +92,7 @@ class TaskDisplayButton(QtGui.QPushButton):
             kLoader.loadData(datas)
 
 ########################################################################
-class TaskLogButton(QtGui.QPushButton):
+class TaskLogButton(QPushButton):
     """显示回测结果"""
     #----------------------------------------------------------------------
     def __init__(self, taskName='', parent=None):
@@ -111,7 +112,7 @@ class TaskLogButton(QtGui.QPushButton):
         ctaTaskPool.taskPool.getTask(self.taskName).log()
 
 ########################################################################
-class TaskParamButton(QtGui.QPushButton):
+class TaskParamButton(QPushButton):
     """查看参数按钮"""
     tp = None
     #----------------------------------------------------------------------
@@ -136,7 +137,7 @@ class TaskParamButton(QtGui.QPushButton):
 
 
 ########################################################################
-class TaskTable(QtGui.QTableWidget):
+class TaskTable(QTableWidget):
     """任务管理组件"""
 
     #----------------------------------------------------------------------
@@ -162,7 +163,7 @@ class TaskTable(QtGui.QTableWidget):
 
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
-        self.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        self.horizontalHeader().setResizeMode(QHeaderView.Stretch)
         
         self.verticalHeader().setVisible(False)
         self.setEditTriggers(self.NoEditTriggers)
@@ -177,10 +178,10 @@ class TaskTable(QtGui.QTableWidget):
         row = 0
         
         for name, task in l:            
-            cellTaskName  = QtGui.QTableWidgetItem(name)
-            cellTaskTime  = QtGui.QTableWidgetItem(str(task.runTM))
-            cellTaskRunM  = QtGui.QTableWidgetItem(task.runmode)
-            cellStrCls    = QtGui.QTableWidgetItem(task.setting.get('className'))
+            cellTaskName  = QTableWidgetItem(name)
+            cellTaskTime  = QTableWidgetItem(str(task.runTM))
+            cellTaskRunM  = QTableWidgetItem(task.runmode)
+            cellStrCls    = QTableWidgetItem(task.setting.get('className'))
             buttonActive  = TaskActiveButton(name)
             buttonParam   = TaskParamButton(name)
             buttonDisplay = TaskDisplayButton(name)
@@ -211,7 +212,7 @@ class TaskTable(QtGui.QTableWidget):
         self.initCells()
 
 ########################################################################
-class TaskManager(QtGui.QWidget):
+class TaskManager(QWidget):
     """任务管理主界面"""
     signal    = QtCore.pyqtSignal(type(Event()))
     #----------------------------------------------------------------------
@@ -230,18 +231,18 @@ class TaskManager(QtGui.QWidget):
         """初始化界面"""
         self.setWindowTitle(u'任务管理')
         
-        buttonStopAll = QtGui.QPushButton(u'全部停止')
+        buttonStopAll = QPushButton(u'全部停止')
         buttonStopAll.setObjectName(_fromUtf8('redButton'))
         buttonStopAll.clicked.connect(self.taskTab.stopAll)
-        buttonClearAll = QtGui.QPushButton(u'清空所有')
+        buttonClearAll = QPushButton(u'清空所有')
         buttonClearAll.setObjectName(_fromUtf8('blueButton'))
         buttonClearAll.clicked.connect(self.taskTab.clearAll)
-        hbox11 = QtGui.QHBoxLayout()     
+        hbox11 = QHBoxLayout()     
         hbox11.addWidget(buttonStopAll)
         hbox11.addWidget(buttonClearAll)
         hbox11.addStretch()
         
-        grid = QtGui.QVBoxLayout()
+        grid = QVBoxLayout()
         grid.addLayout(hbox11)
         grid.addWidget(self.taskTab)
 
@@ -277,25 +278,25 @@ class TaskParamWidget(BasicDialog):
     #----------------------------------------------------------------------
     def initUi(self):
         """"""
-        QtGui.QWidget.__init__(self)         # 调用父类初始化方法
+        QWidget.__init__(self)         # 调用父类初始化方法
         self.setWindowTitle(u'设置参数')
         self.resize(300,400)                 # 设置窗口大小
-        gridlayout = QtGui.QGridLayout()     # 创建布局组件
+        gridlayout = QGridLayout()     # 创建布局组件
         i = 0
-        lName  = QtGui.QLabel(u'参数')
-        lValue = QtGui.QLabel(u'数值')
+        lName  = QLabel(u'参数')
+        lValue = QLabel(u'数值')
         gridlayout.addWidget(lName,  i, 0 )
         gridlayout.addWidget(lValue, i, 1 )
         for name in self.paramDict:
             i += 1
-            label = QtGui.QLabel(name)                              # 创建单选框
-            self.valueEdit[name] = QtGui.QLineEdit()
+            label = QLabel(name)                              # 创建单选框
+            self.valueEdit[name] = QLineEdit()
             self.valueEdit[name].setText(str(self.paramDict[name]))
             self.valueEdit[name].setFocusPolicy(QtCore.Qt.NoFocus)
             gridlayout.addWidget(label, i, 0 )                      # 添加文本
             gridlayout.addWidget(self.valueEdit[name], i,  1)       # 添加文本框
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(gridlayout)
         self.addButton(vbox)
         self.setLayout(vbox)                                    

@@ -6,9 +6,10 @@ Support By 量投科技(http://www.quantdo.com.cn/)
 
 
 # Qt相关和十字光标
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4 import QtGui,QtCore
+from qtpy.QtGui import *
+from qtpy.QtCore import *
+from qtpy.QtWidgets import *
+from qtpy import QtGui,QtCore
 from uiCrosshair import Crosshair
 import pyqtgraph as pg
 # 其他
@@ -30,12 +31,12 @@ except AttributeError:
 ########################################################################
 # 键盘鼠标功能
 ########################################################################
-class KeyWraper(QtGui.QWidget):
+class KeyWraper(QWidget):
     """键盘鼠标功能支持的元类"""
     #初始化
     #----------------------------------------------------------------------
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
         self.setMouseTracking(True)
 
     #重载方法keyPressEvent(self,event),即按键按下事件方法
@@ -227,7 +228,7 @@ class CandlestickItem(pg.GraphicsObject):
         self.offset   = 0
         self.low      = 0
         self.high     = 1
-        self.picture  = QtGui.QPicture()
+        self.picture  = QPicture()
         self.pictures = []
         self.bPen     = pg.mkPen(color=(0, 240, 240, 255), width=w*2)
         self.bBrush   = pg.mkBrush((0, 240, 240, 255))
@@ -255,8 +256,8 @@ class CandlestickItem(pg.GraphicsObject):
         low,high = (data[0]['low'],data[0]['high']) if len(data)>0 else (0,1)
         for (t, open0, close0, low0, high0) in data:
             if t >= len(self.pictures):
-                picture = QtGui.QPicture()
-                p = QtGui.QPainter(picture)
+                picture = QPicture()
+                p = QPainter(picture)
                 low,high = (min(low,low0),max(high,high0))
                 # 下跌蓝色（实心）, 上涨红色（空心）
                 pen,brush,pmin,pmax = (bPen,bBrush,close0,open0)\
@@ -297,8 +298,8 @@ class CandlestickItem(pg.GraphicsObject):
     # 缓存图片
     #----------------------------------------------------------------------
     def createPic(self,xmin,xmax):
-        picture = QtGui.QPicture()
-        p = QtGui.QPainter(picture)
+        picture = QPicture()
+        p = QPainter(picture)
         [pic.play(p) for pic in self.pictures[xmin:xmax]]
         p.end()
         return picture
@@ -385,7 +386,7 @@ class KLineWidget(KeyWraper):
         # 注册十字光标
         self.crosshair = Crosshair(self.pw,self)
         # 设置界面
-        self.vb = QtGui.QVBoxLayout()
+        self.vb = QVBoxLayout()
         self.vb.addWidget(self.pw)
         self.setLayout(self.vb)
         # 初始化完成

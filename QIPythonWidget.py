@@ -1,5 +1,7 @@
 # encoding: UTF-8
-from PyQt4.QtGui  import *
+
+from qtpy.QtWidgets import *
+
 #from qtconsole.qt import QtGui
 from qtconsole.rich_ipython_widget import RichJupyterWidget
 from qtconsole.inprocess import QtInProcessKernelManager

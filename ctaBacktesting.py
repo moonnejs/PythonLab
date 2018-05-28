@@ -1210,9 +1210,9 @@ class BacktestingEngine(object):
             print(u'最大盈利: \t%s' % formatNumber(max(d['pnlList'])))                
             print(u'最大亏损: \t%s' % formatNumber(min(d['pnlList'])))                
             
-            print(u'平均每笔盈亏：\t%s' %formatNumber(d['capital']/d['totalResult']))
-            print(u'平均每笔滑点：\t%s' %formatNumber(d['totalSlippage']/d['totalResult']))
-            print(u'平均每笔佣金：\t%s' %formatNumber(d['totalCommission']/d['totalResult']))
+            print(u'平均每笔盈亏：\t%s' % formatNumber(d['capital']/d['totalResult']))
+            print(u'平均每笔滑点：\t%s' % formatNumber(d['totalSlippage']/d['totalResult']))
+            print(u'平均每笔佣金：\t%s' % formatNumber(d['totalCommission']/d['totalResult']))
 
             print(u'盈亏标准差: \t%s' % formatNumber(np.std(d['drawdownList'])))                
             print(u'回撤标准差: \t%s' % formatNumber(np.std(d['pnlList'])))                
@@ -1220,10 +1220,10 @@ class BacktestingEngine(object):
             print(u'盈亏中位数: \t%s' % formatNumber(np.median(d['drawdownList'])))                
             print(u'回撤中位数: \t%s' % formatNumber(np.median(d['pnlList'])))                
             
-            print(u'胜率\t\t%s%%' %formatNumber(d['winningRate']))
-            print(u'平均每笔盈利\t%s' %formatNumber(d['averageWinning']))
-            print(u'平均每笔亏损\t%s' %formatNumber(d['averageLosing']))
-            print(u'盈亏比：\t%s' %formatNumber(d['profitLossRatio']))
+            print(u'胜率\t\t%s%%' % formatNumber(d['winningRate']))
+            print(u'平均每笔盈利\t%s' % formatNumber(d['averageWinning']))
+            print(u'平均每笔亏损\t%s' % formatNumber(d['averageLosing']))
+            print(u'盈亏比：\t%s' % formatNumber(d['profitLossRatio']))
 
             # 资金曲线插入数据库,用于组合回测
             lastTime = None
@@ -1243,9 +1243,9 @@ class BacktestingEngine(object):
                     capData.datetime = lastTime
                     capData.pnl      = lastCap - lastDayCap
                     capData.drawdown = lastDraw
-                    capData.date     = capData.datetime.replace(hour =0,minute=0,\
-                                       second = 0,microsecond = 0)
-                    insertCap(CAPITAL_DB_NAME,name,capData)
+                    capData.date     = capData.datetime.replace(hour =0, minute=0,\
+                                       second = 0, microsecond = 0)
+                    insertCap(CAPITAL_DB_NAME, name, capData)
                     lastDayCap = lastCap
                 lastTime = time
                 lastCap = cap

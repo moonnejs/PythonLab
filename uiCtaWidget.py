@@ -6,8 +6,10 @@ import matplotlib
 matplotlib.use('Qt4Agg')
 import imp
 import sip
-sip.setapi("QString", 2)
-sip.setapi("QVariant", 2)
+API_NAMES = ["QDate", "QDateTime", "QString", "QTextStream", "QTime", "QUrl", "QVariant"]
+API_VERSION = 2
+for name in API_NAMES:
+    sip.setapi(name, API_VERSION)
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -35,7 +37,7 @@ except AttributeError:
         return s
 
 ########################################################################
-class CtaKLineManager(QtGui.QMainWindow):
+class CtaKLineManager(QMainWindow):
     """K线管理组件"""
 
     #----------------------------------------------------------------------
@@ -67,7 +69,7 @@ class CtaKLineManager(QtGui.QMainWindow):
     def createDock(self, widgetClass, widgetName, widgetArea):
         """创建停靠组件"""
         widget = widgetClass(self.ctaEngine, self.eventEngine, self)
-        dock = QtGui.QDockWidget(widgetName)
+        dock = QDockWidget(widgetName)
         dock.setWidget(widget)
         dock.setObjectName(widgetName)
         dock.setFeatures(dock.DockWidgetFloatable|dock.DockWidgetMovable)
@@ -75,7 +77,7 @@ class CtaKLineManager(QtGui.QMainWindow):
         return widget, dock
         
 ########################################################################
-class CtaEngineManager(QtGui.QMainWindow):
+class CtaEngineManager(QMainWindow):
     """CTA引擎管理组件"""
 
     signal    = QtCore.pyqtSignal(type(Event()))
@@ -123,7 +125,7 @@ class CtaEngineManager(QtGui.QMainWindow):
     def createDock(self, widgetClass, widgetName, widgetArea):
         """创建停靠组件"""
         widget = widgetClass(self.ctaEngine, self.eventEngine, self)
-        dock = QtGui.QDockWidget(widgetName)
+        dock = QDockWidget(widgetName)
         dock.setWidget(widget)
         dock.setObjectName(widgetName)
         dock.setFeatures(dock.DockWidgetFloatable|dock.DockWidgetMovable)
@@ -168,7 +170,7 @@ class CtaEngineManager(QtGui.QMainWindow):
 
 
 ########################################################################
-class ctaLogMonitor(QtGui.QTextEdit):
+class ctaLogMonitor(QTextEdit):
     """日志管理"""
 
     #----------------------------------------------------------------------
@@ -204,22 +206,22 @@ class FileManager(BasicDialog):
         QtCore.QTextCodec.setCodecForTr(QtCore.QTextCodec.codecForName("utf-8"))  
 
         # 设置布局
-        hbox = QtGui.QHBoxLayout()
+        hbox = QHBoxLayout()
         self.hboxAddButton(hbox,u'导入','greenButton',self.data)
         self.hboxAddButton(hbox,u'发布','redButton',self.data)
         self.hboxAddButton(hbox,u'加载数据','redButton',self.data)
         hbox.addStretch()
 
-        self.tbView = QtGui.QTreeView()
+        self.tbView = QTreeView()
   
-        model=QtGui.QFileSystemModel()
+        model=QFileSystemModel()
         model.setRootPath(QtCore.QDir.currentPath())
         model.setNameFilters(["*.py"])
         model.setNameFilterDisables(False);
         model.setHeaderData(0, QtCore.Qt.Horizontal, _fromUtf8(u"策略名称"))
           
         self.tbView.setModel(model)  
-        self.tbView.setSelectionModel(QtGui.QItemSelectionModel(model))  
+        self.tbView.setSelectionModel(QItemSelectionModel(model))  
         self.tbView.setRootIndex(model.index(".\\strategy"))
         self.tbView.setHeaderHidden(True)
         self.tbView.hideColumn(1)
@@ -227,7 +229,7 @@ class FileManager(BasicDialog):
         self.tbView.hideColumn(3)
         QtCore.QObject.connect(self.tbView,QtCore.SIGNAL("doubleClicked(QModelIndex)"),self.addStrategy)  
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(hbox)
         vbox.addWidget(self.tbView)
         self.setLayout(vbox)
@@ -290,27 +292,27 @@ class VectorManager(BasicDialog):
         QtCore.QTextCodec.setCodecForTr(QtCore.QTextCodec.codecForName("utf-8"))  
 
         # 设置布局
-        hbox = QtGui.QHBoxLayout()
+        hbox = QHBoxLayout()
         self.hboxAddButton(hbox,u'载入数据','greenButton',self.loadData)
         self.hboxAddButton(hbox,u'向量回测','redButton',self.vecBt)
         hbox.addStretch()
 
-        gridlayout = QtGui.QGridLayout()
+        gridlayout = QGridLayout()
         self.symbolEdit = self.gridAddLineEditV(gridlayout,u'合约',0)
         self.startEdit  = self.gridAddLineEditV(gridlayout,u'开始时间',1)
         self.endEdit    = self.gridAddLineEditV(gridlayout,u'结束时间',2)
         self.periodType = self.gridAddComboBoxV(gridlayout,u'周期',['','5','15','25','60','D'],3)
 
-        self.tbView = QtGui.QTreeView()
+        self.tbView = QTreeView()
   
-        model=QtGui.QFileSystemModel()
+        model=QFileSystemModel()
         model.setRootPath(QtCore.QDir.currentPath())
         model.setNameFilters(["*.py"])
         model.setNameFilterDisables(False);
         model.setHeaderData(0, QtCore.Qt.Horizontal, _fromUtf8(u"策略名称"))
           
         self.tbView.setModel(model)  
-        self.tbView.setSelectionModel(QtGui.QItemSelectionModel(model))  
+        self.tbView.setSelectionModel(QItemSelectionModel(model))  
         self.tbView.setRootIndex(model.index(".\\vecsig"))
         self.tbView.setHeaderHidden(True)
         self.tbView.hideColumn(1)
@@ -318,7 +320,7 @@ class VectorManager(BasicDialog):
         self.tbView.hideColumn(3)
         QtCore.QObject.connect(self.tbView,QtCore.SIGNAL("doubleClicked(QModelIndex)"),self.selStrategy)  
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(hbox)
         vbox.addLayout(gridlayout)
         vbox.addWidget(self.tbView)
@@ -330,7 +332,7 @@ class VectorManager(BasicDialog):
         if self.selectionModel().selection().indexes():
             for i in self.tbView.selectionModel().selection().indexes():
                 row, column = i.row(), i.column()
-            menu = QtGui.QMenu()
+            menu = QMenu()
             openAction = menu.addAction(u"打开")
             deleAction = menu.addAction(u"删除")
             renaAction = menu.addAction(u"重命名")
@@ -425,7 +427,7 @@ class StrategyParamManager(BasicDialog):
         self.setWindowTitle(u'策略参数')
         #self.setMaximumHeight(250)
         allModes = ['TICK','TICK(PERF)','BAR','BAR(PERF)','BAR(DISPLAY)']
-        gridlayout = QtGui.QGridLayout()
+        gridlayout = QGridLayout()
         self.startEdit  = self.gridAddLineEditV(gridlayout,u'开始时间',0)
         self.endEdit    = self.gridAddLineEditV(gridlayout,u'结束时间',1)
         self.modeType   = self.gridAddComboBoxV(gridlayout,u'回测模式',allModes,2)
@@ -438,17 +440,17 @@ class StrategyParamManager(BasicDialog):
         
         QtCore.QTextCodec.setCodecForTr(QtCore.QTextCodec.codecForName("utf-8"))  
 
-        self.btView = QtGui.QTableView()
+        self.btView = QTableView()
   
         self.modelP=StrategyParam(self.eventEngine,self.ctaEngine)
         self.btView.setModel(self.modelP)  
           
         self.btView.horizontalHeader().setStretchLastSection(True)
-        self.btView.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
-        self.btView.setEditTriggers(QtGui.QTableWidget.NoEditTriggers)
-        self.btView.setSelectionBehavior(QtGui.QTableWidget.SelectRows)
+        self.btView.horizontalHeader().setResizeMode(QHeaderView.Stretch)
+        self.btView.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.btView.setSelectionBehavior(QTableWidget.SelectRows)
 
-        hbox = QtGui.QHBoxLayout()     
+        hbox = QHBoxLayout()     
         self.hboxAddButton(hbox,u'回测','redButton',self.backtest)
         self.hboxAddButton(hbox,u'全部回测','redButton',self.btAll)
         self.hboxAddButton(hbox,u'参数扫描','blueButton',self.optimize)
@@ -457,11 +459,11 @@ class StrategyParamManager(BasicDialog):
         self.switchModeButton = self.hboxAddButton(hbox,u'切换模式（延时）','blueButton',self.switchMode)
         hbox.addStretch()
 
-        hbox1 = QtGui.QHBoxLayout()     
+        hbox1 = QHBoxLayout()     
         hbox1.addLayout(gridlayout)
         hbox1.addStretch()
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(hbox)
         vbox.addLayout(hbox1)
         vbox.addWidget(self.btView)
@@ -599,26 +601,26 @@ class StrategyBtManager(BasicDialog):
         
         QtCore.QTextCodec.setCodecForTr(QtCore.QTextCodec.codecForName("utf-8"))  
 
-        hbox = QtGui.QHBoxLayout()     
+        hbox = QHBoxLayout()     
         self.hboxAddButton(hbox,u'删除','greenButton',self.delete)
         self.hboxAddButton(hbox,u'组合报告','blueButton',self.report)
         hbox.addStretch()
         
-        self.tbView = QtGui.QTreeView()
+        self.tbView = QTreeView()
         self.modelBt=StrategyBacktesting(self.eventEngine,self.ctaEngine,self.tbView)
         self.modelBt.updateData()
 
         self.tbView.setModel(self.modelBt)  
-        self.tbView.setSelectionModel(QtGui.QItemSelectionModel(self.modelBt))  
+        self.tbView.setSelectionModel(QItemSelectionModel(self.modelBt))  
 
         self.tbView.setColumnWidth(0, 200)
         self.tbView.setItemsExpandable(False)
-        self.tbView.setEditTriggers(QtGui.QTableWidget.NoEditTriggers)
-        self.tbView.setSelectionBehavior(QtGui.QTableWidget.SelectRows)
+        self.tbView.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.tbView.setSelectionBehavior(QTableWidget.SelectRows)
 
         QtCore.QObject.connect(self.tbView,QtCore.SIGNAL("clicked(QModelIndex)"),self.showStrategy)  
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(hbox)
         vbox.addWidget(self.tbView)
         self.setLayout(vbox)
@@ -650,7 +652,7 @@ class StrategyBtManager(BasicDialog):
         self.ctaEngine.reportStrategy()
         
 ########################################################################
-class TabWidget(QtGui.QTabWidget):
+class TabWidget(QTabWidget):
     def __init__(self, eventEngine, ctaEngine, parent=None):
         super(TabWidget, self).__init__(parent)
         # 创建事件引擎

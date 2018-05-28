@@ -1,20 +1,14 @@
 # -*- coding: utf-8 -*-
-from ctaBase import CtaBarData 
 from uiBasicIO import uiBasicIO
 from uiKLine import KLineWidget
 # PyQt
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4 import QtGui,QtCore
-from datetime import datetime
+from qtpy.QtGui import *
+from qtpy.QtCore import *
+from qtpy.QtWidgets import *
+from qtpy import QtGui,QtCore
 
-from threading import Thread
 from collections import deque
 
-import pymongo
-import time
-
-import numpy as np
 import pandas as pd
 
 
@@ -27,7 +21,7 @@ class ctaKLine(uiBasicIO):
     dbClient = None
     signal = QtCore.pyqtSignal(type({}))
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     def __init__(self, ctaEngine, eventEngine, parent=None):
         """初始化函数"""
         import ctaBase
@@ -56,7 +50,7 @@ class ctaKLine(uiBasicIO):
 
         self.initUi()
 
-    #-----------------------------------------------
+    # -----------------------------------------------
     def loadData(self,data):
         """载入所有数据"""
         self.bars = data['bar']
@@ -120,10 +114,10 @@ class ctaKLine(uiBasicIO):
     #----------------------------------------------------------------------
     def initUi(self):
         """初始化界面"""
-        hbox = QtGui.QHBoxLayout()
+        hbox = QHBoxLayout()
         hbox.addWidget(self.groupInput)
         hbox.addWidget(self.groupProcess)
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(hbox)
         vbox.addWidget(self.canvas)
         self.setLayout(vbox)

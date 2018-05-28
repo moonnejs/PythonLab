@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2ab50d1-d6d2-4bec-ba74-0b4e0168096e" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/QIPythonWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/QIPythonWidget.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ctaBacktesting.py" beforeDir="false" afterPath="$PROJECT_DIR$/ctaBacktesting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ctaBasicModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/ctaBasicModel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uiBasicIO.py" beforeDir="false" afterPath="$PROJECT_DIR$/uiBasicIO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uiBasicWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/uiBasicWidget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uiCtaKLine.py" beforeDir="false" afterPath="$PROJECT_DIR$/uiCtaKLine.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,16 +18,100 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ctaBacktesting.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ctaBacktesting.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ctaBacktesting.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
-              <caret line="1064" column="6" selection-start-line="1064" selection-start-column="6" selection-end-line="1064" selection-end-column="6" />
+            <state relative-caret-position="-299">
+              <caret line="30" column="21" lean-forward="true" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="uiCtaKLine.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uiCtaKLine.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-276">
+              <caret line="51" column="6" selection-start-line="51" selection-start-column="6" selection-end-line="51" selection-end-column="6" />
+              <folding>
+                <element signature="e#25#56#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="uiBasicIO.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uiBasicIO.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1104">
+              <caret line="78" column="22" lean-forward="true" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="22" />
+              <folding>
+                <element signature="e#31#58#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QIPythonWidget.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/QIPythonWidget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="23">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
+              <folding>
+                <element signature="e#20#47#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ctaTaskPool.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ctaTaskPool.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="ctaBasicModel.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ctaBasicModel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="269">
+              <caret line="126" column="26" selection-start-line="126" selection-start-column="26" selection-end-line="126" selection-end-column="26" />
+              <folding>
+                <element signature="e#58#89#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="uiBasicWidget.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/uiBasicWidget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="614">
+              <caret line="170" column="4" selection-start-line="170" selection-start-column="4" selection-end-line="170" selection-end-column="4" />
+              <folding>
+                <element signature="e#57#67#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="uiCtaTaskWidget.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uiCtaTaskWidget.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="uiCrosshair.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uiCrosshair.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>timedelta</find>
+      <find>QtGui</find>
+      <find>pyqtSignal</find>
+      <find>Signal</find>
+      <find>signal</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -31,6 +120,11 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/ctaBacktesting.py" />
+        <option value="$PROJECT_DIR$/uiCtaKLine.py" />
+        <option value="$PROJECT_DIR$/uiBasicIO.py" />
+        <option value="$PROJECT_DIR$/QIPythonWidget.py" />
+        <option value="$PROJECT_DIR$/ctaBasicModel.py" />
+        <option value="$PROJECT_DIR$/uiBasicWidget.py" />
       </list>
     </option>
   </component>
@@ -43,7 +137,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="240" />
     <option name="y" value="126" />
     <option name="width" value="1440" />
@@ -60,6 +154,17 @@
             <path>
               <item name="PythonLab" type="b2602c69:ProjectViewProjectNode" />
               <item name="PythonLab" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PythonLab" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonLab" type="462c0819:PsiDirectoryNode" />
+              <item name="strategy" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PythonLab" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonLab" type="462c0819:PsiDirectoryNode" />
+              <item name="strategy" type="462c0819:PsiDirectoryNode" />
+              <item name="期货趋势" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -142,8 +247,67 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ctaBacktesting.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-299">
+          <caret line="30" column="21" lean-forward="true" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uiCtaTaskWidget.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uiCtaKLine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-276">
+          <caret line="51" column="6" selection-start-line="51" selection-start-column="6" selection-end-line="51" selection-end-column="6" />
+          <folding>
+            <element signature="e#25#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uiCrosshair.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ctaTaskPool.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ctaBasicModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="126" column="26" selection-start-line="126" selection-start-column="26" selection-end-line="126" selection-end-column="26" />
+          <folding>
+            <element signature="e#58#89#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QIPythonWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
-          <caret line="1064" column="6" selection-start-line="1064" selection-start-column="6" selection-end-line="1064" selection-end-column="6" />
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="e#20#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uiBasicIO.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1104">
+          <caret line="78" column="22" lean-forward="true" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="22" />
+          <folding>
+            <element signature="e#31#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uiBasicWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="614">
+          <caret line="170" column="4" selection-start-line="170" selection-start-column="4" selection-end-line="170" selection-end-column="4" />
+          <folding>
+            <element signature="e#57#67#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

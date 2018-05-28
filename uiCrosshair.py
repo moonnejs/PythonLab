@@ -1,6 +1,5 @@
 # encoding: UTF-8
 import sys,os
-import PyQt4
 import pyqtgraph as pg
 import datetime as dt          
 import numpy as np
@@ -12,7 +11,7 @@ from pyqtgraph.Point import Point
 ########################################################################
 # 十字光标支持
 ########################################################################
-class Crosshair(PyQt4.QtCore.QObject):
+class Crosshair(QtCore.QObject):
     """
     此类给pg.PlotWidget()添加crossHair功能,PlotWidget实例需要初始化时传入
     """

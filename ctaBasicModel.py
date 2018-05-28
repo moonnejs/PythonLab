@@ -5,7 +5,7 @@
 '''
 
 from __future__ import division
-from PyQt4 import QtGui, QtCore
+from qtpy import QtGui, QtCore
 from ctaBase import *
 from eventEngine import *
 
@@ -13,7 +13,7 @@ from eventEngine import *
 class StrategyBacktesting(QtGui.QStandardItemModel):
 
     """用于回测的策略信息"""
-    signal = QtCore.pyqtSignal(type(Event()))
+    signal = QtCore.Signal(type(Event()))
     #----------------------------------------------------------------------
     def __init__(self, eventEngine, ctaEngine=None, view = None):
         """Constructor"""
@@ -81,7 +81,7 @@ class StrategyBacktesting(QtGui.QStandardItemModel):
 class StrategyParam(QtGui.QStandardItemModel):
 
     """用于回测的策略信息"""
-    signal = QtCore.pyqtSignal(type(Event()))
+    signal = QtCore.Signal(type(Event()))
     #----------------------------------------------------------------------
     def __init__(self, eventEngine, ctaEngine=None):
         """Constructor"""
@@ -123,8 +123,8 @@ class StrategyParam(QtGui.QStandardItemModel):
 ########################################################################
 class MongoData(QtGui.QStandardItemModel):
 
-    """用于回测的策略信息"""
-    signal = QtCore.pyqtSignal(type(Event()))
+    """数据信息"""
+    signal = QtCore.Signal(type(Event()))
     #----------------------------------------------------------------------
     def __init__(self, eventEngine, ctaEngine=None):
         """Constructor"""
@@ -150,7 +150,6 @@ class MongoData(QtGui.QStandardItemModel):
         self.setHorizontalHeaderItem(1, QtGui.QStandardItem(u'数据范围'))
         self.setHorizontalHeaderItem(2, QtGui.QStandardItem(u'文件大小'))
         self.appendRow([
-        QtGui.QStandardItem(str(v)) for v in values
-        ])
+        QtGui.QStandardItem(str(v)) for v in values])
 
 

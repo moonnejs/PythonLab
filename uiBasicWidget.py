@@ -4,19 +4,15 @@ CAPITAL_DB_NAME = 'vt_trader_cap_db'
 
 import csv
 import json
-import multiprocessing
-from threading import Thread
 
 import numpy as np
 from collections import OrderedDict
 from datetime import datetime, timedelta
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-
-from pymongo import MongoClient
-from pymongo.errors import *
+from qtpy import QtGui, QtCore
+from qtpy.QtCore import *
+from qtpy.QtGui import *
+from qtpy.QtWidgets import *
 
 from eventEngine import *
 from ctaBasicModel import *
@@ -56,22 +52,22 @@ def loadFont():
         setting = json.load(f)
         family = setting['fontFamily']
         size = setting['fontSize']
-        font = QtGui.QFont(family, size)
+        font = QFont(family, size)
     except:
-        font = QtGui.QFont(u'微软雅黑', 12)
+        font = QFont(u'微软雅黑', 12)
     return font
 
 BASIC_FONT = loadFont()
 
 ########################################################################
-class btQApp(QtGui.QApplication):
+class btQApp(QApplication):
     """定义回测应用，注册回测快捷键"""
     
     #----------------------------------------------------------------------
     def __init__(self, argv, eventEngine):
         """Constructor"""
         super(btQApp, self).__init__(argv)
-        self.setWindowIcon(QtGui.QIcon('cta.ico'))
+        self.setWindowIcon(QIcon('cta.ico'))
         self.setFont(BASIC_FONT) 
         self.eventEngine = eventEngine
         
@@ -88,7 +84,7 @@ class btQApp(QtGui.QApplication):
 
 
 ########################################################################
-class BasicDialog(QtGui.QWidget):
+class BasicDialog(QWidget):
     """基础对话框"""
 
     #----------------------------------------------------------------------
@@ -99,7 +95,7 @@ class BasicDialog(QtGui.QWidget):
     #----------------------------------------------------------------------
     def hboxAddButton(self,hbox,name,style,func):
         """新增一行"""
-        button = QtGui.QPushButton(name)
+        button = QPushButton(name)
         button.setObjectName(_fromUtf8(style))
         button.clicked.connect(func)
         hbox.addWidget(button)
@@ -108,8 +104,8 @@ class BasicDialog(QtGui.QWidget):
     #----------------------------------------------------------------------
     def gridAddComboBox(self,gridlayout,name,listItems,index):
         """新增一行"""
-        label = QtGui.QLabel(name)     
-        lcbox = QtGui.QComboBox()
+        label = QLabel(name)
+        lcbox = QComboBox()
         lcbox.addItems(listItems)
         gridlayout.addWidget(label, index, 0)
         gridlayout.addWidget(lcbox, index, 1)
@@ -118,8 +114,8 @@ class BasicDialog(QtGui.QWidget):
     #----------------------------------------------------------------------
     def gridAddLineEdit(self,gridlayout,name,index):
         """新增一行"""
-        label = QtGui.QLabel(name)     
-        ledit = QtGui.QLineEdit()
+        label = QLabel(name)
+        ledit = QLineEdit()
         gridlayout.addWidget(label, index, 0)
         gridlayout.addWidget(ledit, index, 1)
         return ledit
@@ -127,8 +123,8 @@ class BasicDialog(QtGui.QWidget):
     #----------------------------------------------------------------------
     def gridAddLineEditV(self,gridlayout,name,index):
         """新增一行"""
-        label = QtGui.QLabel(name)     
-        ledit = QtGui.QLineEdit()
+        label = QLabel(name)
+        ledit = QLineEdit()
         gridlayout.addWidget(label, 0, index)
         gridlayout.addWidget(ledit, 1, index)
         return ledit
@@ -136,8 +132,8 @@ class BasicDialog(QtGui.QWidget):
     #----------------------------------------------------------------------
     def gridAddComboBoxV(self,gridlayout,name,listItems,index):
         """新增一行"""
-        label = QtGui.QLabel(name)     
-        lcbox = QtGui.QComboBox()
+        label = QLabel(name)
+        lcbox = QComboBox()
         lcbox.addItems(listItems)
         gridlayout.addWidget(label, 0, index)
         gridlayout.addWidget(lcbox, 1, index)
@@ -146,8 +142,8 @@ class BasicDialog(QtGui.QWidget):
     #----------------------------------------------------------------------
     def addButton(self,vbox):
         """添加确认退出按钮"""
-        self.buttonEdit = QtGui.QPushButton(u'确认')                  
-        self.buttonClose = QtGui.QPushButton(u'退出')                  
+        self.buttonEdit = QPushButton(u'确认')
+        self.buttonClose = QPushButton(u'退出')
         
         # 界面美化
         self.buttonEdit.setObjectName(_fromUtf8("redButton"))
@@ -160,7 +156,7 @@ class BasicDialog(QtGui.QWidget):
           QtCore.SIGNAL('clicked()'),
           self.close)
 
-        hbox = QtGui.QHBoxLayout()
+        hbox = QHBoxLayout()
         hbox.addWidget(self.buttonEdit)
         hbox.addWidget(self.buttonClose)
 
@@ -168,7 +164,7 @@ class BasicDialog(QtGui.QWidget):
 
     #----------------------------------------------------------------------
     def OnButtonEdit(self):                                           
-	self.close()
+        self.close()
 
 ########################################################################
 class StrategyAddWidget(BasicDialog):
@@ -185,17 +181,17 @@ class StrategyAddWidget(BasicDialog):
     #----------------------------------------------------------------------
     def initUi(self):
         """初始化界面"""
-        QtGui.QWidget.__init__(self)      # 调用父类初始化方法
+        QWidget.__init__(self)      # 调用父类初始化方法
         self.setWindowTitle(u'新增策略')
-        self.resize(400,200) 
-        gridlayout = QtGui.QGridLayout()     
+        self.resize(400, 200)
+        gridlayout = QGridLayout()
 
-        self.sClass   = self.gridAddLineEdit(gridlayout,u'策略类',0)
-        self.lineName = self.gridAddLineEdit(gridlayout,u'实例名（不可重复）',1)
-        self.lineCap  = self.gridAddLineEdit(gridlayout,u'使用资金',2)
+        self.sClass   = self.gridAddLineEdit(gridlayout, u'策略类',0)
+        self.lineName = self.gridAddLineEdit(gridlayout, u'实例名（不可重复）',1)
+        self.lineCap  = self.gridAddLineEdit(gridlayout, u'使用资金',2)
         self.sClass.setFocusPolicy(QtCore.Qt.NoFocus)
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(gridlayout)
         self.addButton(vbox)
         self.setLayout(vbox)                                    
@@ -244,15 +240,15 @@ class InfoInputWidget(BasicDialog):
     #----------------------------------------------------------------------
     def initUi(self):
         """"""
-        QtGui.QWidget.__init__(self)         # 调用父类初始化方法
+        QWidget.__init__(self)         # 调用父类初始化方法
         self.setWindowTitle(u'设置参数')
-        self.resize(600,400)                 # 设置窗口大小
-        gridlayout = QtGui.QGridLayout()     # 创建布局组件
+        self.resize(600, 400)                 # 设置窗口大小
+        gridlayout = QGridLayout()     # 创建布局组件
         i = 0
-        lName  = QtGui.QLabel(u'变量名')
-        lStart = QtGui.QLabel('start')
-        lStep  = QtGui.QLabel('step')
-        lStop  = QtGui.QLabel('stop')
+        lName  = QLabel(u'变量名')
+        lStart = QLabel('start')
+        lStep  = QLabel('step')
+        lStop  = QLabel('stop')
         gridlayout.addWidget(lName,  i, 0 )
         gridlayout.addWidget(lStart, i, 1 )
         gridlayout.addWidget(lStep,  i, 2 )
@@ -261,16 +257,16 @@ class InfoInputWidget(BasicDialog):
             if not (name=='name' or name=='className' or name=='author'
                     or name=='vtSymbol' or name=='backtesting'):            
                 i += 1
-                label = QtGui.QLabel(name)   # 创建单选框
-                self.startEdit[name] = QtGui.QLineEdit()
-                self.stepEdit[name]  = QtGui.QLineEdit()
-                self.stopEdit[name]  = QtGui.QLineEdit()
+                label = QLabel(name)   # 创建单选框
+                self.startEdit[name] = QLineEdit()
+                self.stepEdit[name]  = QLineEdit()
+                self.stopEdit[name]  = QLineEdit()
                 gridlayout.addWidget(label, i, 0 )                    # 添加文本
                 gridlayout.addWidget(self.startEdit[name], i,  1)   # 添加文本框
                 gridlayout.addWidget(self.stepEdit[name],  i,  2)   # 添加文本框
                 gridlayout.addWidget(self.stopEdit[name],  i,  3)   # 添加文本框
         
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(gridlayout)
         self.addButton(vbox)
         self.setLayout(vbox)                                    
@@ -326,29 +322,29 @@ class RollingInputWidget(BasicDialog):
     #----------------------------------------------------------------------
     def initUi(self):
         """"""
-        QtGui.QWidget.__init__(self)         # 调用父类初始化方法
+        QWidget.__init__(self)         # 调用父类初始化方法
         self.setWindowTitle(u'设置参数')
-        self.resize(600,400)                 # 设置窗口大小
-        gridlayout = QtGui.QGridLayout()     # 创建布局组件
+        self.resize(600, 400)                 # 设置窗口大小
+        gridlayout = QGridLayout()     # 创建布局组件
         i = 0
-        lName  = QtGui.QLabel(u'变量名')
-        lStart = QtGui.QLabel('start')
-        lStep  = QtGui.QLabel('step')
-        lStop  = QtGui.QLabel('stop')
+        lName  = QLabel(u'变量名')
+        lStart = QLabel('start')
+        lStep  = QLabel('step')
+        lStop  = QLabel('stop')
         gridlayout.addWidget(lName,  i, 0 )
         gridlayout.addWidget(lStart, i, 1 )
         gridlayout.addWidget(lStep,  i, 2 )
         gridlayout.addWidget(lStop,  i, 3 )
-        rdaysLabel  = QtGui.QLabel(u'滚动日期')
-        self.rdaysEdit = QtGui.QLineEdit()
+        rdaysLabel  = QLabel(u'滚动日期')
+        self.rdaysEdit = QLineEdit()
         for name in self.paramList:
             if not (name=='name' or name=='className' or name=='author'
                     or name=='vtSymbol' or name=='backtesting'):            
                 i += 1
-                label = QtGui.QLabel(name)   # 创建单选框
-                self.startEdit[name] = QtGui.QLineEdit()
-                self.stepEdit[name]  = QtGui.QLineEdit()
-                self.stopEdit[name]  = QtGui.QLineEdit()
+                label = QLabel(name)   # 创建单选框
+                self.startEdit[name] = QLineEdit()
+                self.stepEdit[name]  = QLineEdit()
+                self.stopEdit[name]  = QLineEdit()
                 gridlayout.addWidget(label, i, 0 )                    # 添加文本
                 gridlayout.addWidget(self.startEdit[name], i,  1)   # 添加文本框
                 gridlayout.addWidget(self.stepEdit[name],  i,  2)   # 添加文本框
@@ -357,7 +353,7 @@ class RollingInputWidget(BasicDialog):
         gridlayout.addWidget(rdaysLabel, i+1, 0 )            
         gridlayout.addWidget(self.rdaysEdit, i+1,  1)   
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(gridlayout)
         self.addButton(vbox)
         self.setLayout(vbox)                                    
@@ -410,20 +406,20 @@ class StratrgySettingWidget(BasicDialog):
     #----------------------------------------------------------------------
     def initUi(self):
         """"""
-        QtGui.QWidget.__init__(self)         # 调用父类初始化方法
+        QWidget.__init__(self)         # 调用父类初始化方法
         self.setWindowTitle(u'设置参数')
         self.resize(300,400)                 # 设置窗口大小
-        gridlayout = QtGui.QGridLayout()     # 创建布局组件
+        gridlayout = QGridLayout()     # 创建布局组件
         i = 0
-        gridlayout.addWidget(QtGui.QLabel(u'变量'),  i, 0 )   # 表头
-        gridlayout.addWidget(QtGui.QLabel(u'内容'),  i, 1 )   # 表头
+        gridlayout.addWidget(QLabel(u'变量'),  i, 0 )   # 表头
+        gridlayout.addWidget(QLabel(u'内容'),  i, 1 )   # 表头
         for name in self.paramDict:
            i += 1
-           label = QtGui.QLabel(name)   # 创建单选框
+           label = QLabel(name)   # 创建单选框
            self.valueEdit[name] = self.gridAddLineEdit(gridlayout,name,i)
            self.valueEdit[name].setText(str(self.paramDict[name]))
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         vbox.addLayout(gridlayout)
         self.addButton(vbox)
         self.setLayout(vbox)                                    
