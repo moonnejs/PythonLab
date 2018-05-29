@@ -19,7 +19,7 @@ class ctaKLine(uiBasicIO):
     """K线向量化回测工具"""
 
     dbClient = None
-    signal = QtCore.pyqtSignal(type({}))
+    signal = QtCore.Signal(type({}))
 
     # ----------------------------------------------------------------------
     def __init__(self, ctaEngine, eventEngine, parent=None):
