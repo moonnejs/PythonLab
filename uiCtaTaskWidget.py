@@ -163,7 +163,7 @@ class TaskTable(QTableWidget):
 
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
-        self.horizontalHeader().setResizeMode(QHeaderView.Stretch)
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         
         self.verticalHeader().setVisible(False)
         self.setEditTriggers(self.NoEditTriggers)
@@ -214,7 +214,7 @@ class TaskTable(QTableWidget):
 ########################################################################
 class TaskManager(QWidget):
     """任务管理主界面"""
-    signal    = QtCore.pyqtSignal(type(Event()))
+    signal    = QtCore.Signal(type(Event()))
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, eventEngine, parent=None):
         """Constructor"""

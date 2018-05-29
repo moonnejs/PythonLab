@@ -80,8 +80,8 @@ class CtaKLineManager(QMainWindow):
 class CtaEngineManager(QMainWindow):
     """CTA引擎管理组件"""
 
-    signal    = QtCore.pyqtSignal(type(Event()))
-    signalL   = QtCore.pyqtSignal(type(Event()))
+    signal    = QtCore.Signal(type(Event()))
+    signalL   = QtCore.Signal(type(Event()))
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, eventEngine, title = 'ctaStrategy', parent=None):
         """Constructor"""
@@ -267,7 +267,7 @@ class FileManager(BasicDialog):
 class VectorManager(BasicDialog):
     """向量化回测管理"""
 
-    signalBT  = QtCore.pyqtSignal(type(Event()))
+    signalBT  = QtCore.Signal(type(Event()))
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, eventEngine, parent=None):
         """Constructor"""
@@ -400,8 +400,8 @@ class VectorManager(BasicDialog):
 class StrategyParamManager(BasicDialog):
     """参数配置界面"""
 
-    signal    = QtCore.pyqtSignal(type(Event()))
-    signalBT  = QtCore.pyqtSignal(type(Event()))
+    signal    = QtCore.Signal(type(Event()))
+    signalBT  = QtCore.Signal(type(Event()))
     #----------------------------------------------------------------------
     def __init__(self, ctaEngine, eventEngine, master=None):
         """Constructor"""
@@ -446,7 +446,7 @@ class StrategyParamManager(BasicDialog):
         self.btView.setModel(self.modelP)  
           
         self.btView.horizontalHeader().setStretchLastSection(True)
-        self.btView.horizontalHeader().setResizeMode(QHeaderView.Stretch)
+        self.btView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.btView.setEditTriggers(QTableWidget.NoEditTriggers)
         self.btView.setSelectionBehavior(QTableWidget.SelectRows)
 
