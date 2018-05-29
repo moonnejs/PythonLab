@@ -163,7 +163,7 @@ class TaskTable(QTableWidget):
 
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
-        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.horizontalHeader().setResizeMode(QHeaderView.Stretch)
         
         self.verticalHeader().setVisible(False)
         self.setEditTriggers(self.NoEditTriggers)
