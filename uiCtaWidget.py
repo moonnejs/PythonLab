@@ -426,7 +426,7 @@ class StrategyParamManager(BasicDialog):
         """初始化界面"""
         self.setWindowTitle(u'策略参数')
         #self.setMaximumHeight(250)
-        allModes = ['TICK','TICK(PERF)','BAR','BAR(PERF)','BAR(DISPLAY)']
+        allModes = ['TICK','TICK(CPP)','TICK(PERF)','BAR','BAR(PERF)','BAR(DISPLAY)']
         gridlayout = QGridLayout()
         self.startEdit  = self.gridAddLineEditV(gridlayout,u'开始时间',0)
         self.endEdit    = self.gridAddLineEditV(gridlayout,u'结束时间',1)
@@ -487,6 +487,8 @@ class StrategyParamManager(BasicDialog):
             mode = 'T'+pType
         elif str(self.modeType.currentText()) == 'TICK(PERF)':
             mode = 'TP'+pType
+        elif str(self.modeType.currentText()) == 'TICK(CPP)':
+            mode = 'TC'+pType
         elif str(self.modeType.currentText()) == 'BAR':
             mode = 'B'+pType
         elif str(self.modeType.currentText()) == 'BAR(PERF)':

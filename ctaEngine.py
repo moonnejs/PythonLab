@@ -120,7 +120,8 @@ class CtaEngine(object):
 	        if setting[u'name'] == name:
 	            setting_bt = setting
         q = True if mode[0:2] == 'BV' else False
-        xmode = 'bt-perf' if mode[0:2] in ['BP','BT'] else 'bt-f' 
+        xmode = 'bt-perf' if mode[0:2] in ['BP','TP'] else 'bt-f' 
+        xmode = 'bt-c' if mode[0:2] in ['BC','TC'] else xmode 
         t = ctaTaskPool.taskPool.addTask('bt',args=(setting_bt, startTime, endTime, slippage, self.optimism, mode, q), mode = xmode, runmode = mode)
 
     #----------------------------------------------------------------------

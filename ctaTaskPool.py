@@ -32,6 +32,17 @@ def backtestingE(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimis
         print 'traceback.print_exc():'; traceback.print_exc()
         return setting_bt['name'],{},0
 
+# 使用C++引擎回测单个策略
+#---------------------------------------------------------------------------------------
+def backtestingC(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimism = False, mode = 'T', q = False):
+    """回测单个策略"""
+    try:
+        return backtesting(setting_bt, StartTime, EndTime, slippage, optimism, mode, q, runmode='CPP')
+    except Exception, e:
+        print(u'回测策略出错：%s' %e)
+        print 'traceback.print_exc():'; traceback.print_exc()
+        return setting_bt['name'],{},0
+
 # 无日志回测单个策略，同时分析性能
 #---------------------------------------------------------------------------------------
 def backtestingPerfE(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimism = False, mode = 'T', q = False):
@@ -73,7 +84,6 @@ def optimizeE(setting_bt, optimizationSetting, StartTime = '20161001', EndTime =
         return setting_bt['name'],{},0
 
 taskPool = None
-
 ########################################################################
 class ctaTaskPool(object):
     """
@@ -131,6 +141,7 @@ class ctaTaskPool(object):
         """新增任务"""
         name0 = '-'.join([name,str(self.taskCount)])
         target  = backtestingE if mode == 'bt-f' else \
+                  backtestingC if mode == 'bt-c' else\
                   backtestingPerfE if mode == 'bt-perf' else\
                   optimizeE if mode == 'op' else\
                   backtestingRollingE if mode == 'bt-r' else optimizeB

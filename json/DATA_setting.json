@@ -1,7 +1,7 @@
 [
     {
         "dbname": "vnTrader_Tick_db", 
-        "mode": ["T","TP"], 
+        "mode": ["T","TP","TC"], 
         "type": "tick" 
     }, 
     {
