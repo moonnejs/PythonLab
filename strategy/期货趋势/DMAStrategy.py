@@ -108,8 +108,8 @@ class DMAStrategy(CtaTemplate):
     def onBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
         self.bar = bar
-        if self.tradeDate != bar.date:
-            self.tradeDate = bar.date
+        if self.tradeDate != bar.datetime.date():
+            self.tradeDate = bar.datetime.date()
 
         # 记录数据
         if not self.am.updateBar(bar):
