@@ -447,7 +447,7 @@ class StrategyParamManager(BasicDialog):
         self.btView.setModel(self.modelP)  
           
         self.btView.horizontalHeader().setStretchLastSection(True)
-        self.btView.horizontalHeader().setResizeMode(QHeaderView.Stretch)
+        self.btView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.btView.setEditTriggers(QTableWidget.NoEditTriggers)
         self.btView.setSelectionBehavior(QTableWidget.SelectRows)
 
@@ -458,7 +458,7 @@ class StrategyParamManager(BasicDialog):
         self.hboxAddButton(hbox,u'参数扫描','blueButton',self.optimize)
         self.hboxAddButton(hbox,u'滚动优化','greenButton',self.rollingOp)
         self.hboxAddButton(hbox,u'聚合K线', 'redButton', self.createXbars)
-        self.switchModeButton = self.hboxAddButton(hbox,u'切换模式（延时）','blueButton',self.switchMode)
+        self.switchModeButton = self.hboxAddButton(hbox,u'延时模式（切换）','blueButton',self.switchMode)
         hbox.addStretch()
 
         hbox1 = QHBoxLayout()     
@@ -575,10 +575,10 @@ class StrategyParamManager(BasicDialog):
         """切换回测模式"""
         if not self.ctaEngine.optimism:
             self.ctaEngine.optimism = True
-            self.switchModeButton.setText(u'切换模式（及时）')
+            self.switchModeButton.setText(u'及时模式（切换）')
         else:
             self.ctaEngine.optimism = False
-            self.switchModeButton.setText(u'切换模式（延时）')
+            self.switchModeButton.setText(u'延时模式（切换）')
         
     #----------------------------------------------------------------------
     def updateParam(self,evt):
