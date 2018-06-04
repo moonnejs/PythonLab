@@ -21,6 +21,7 @@ from ctaBacktesting import OptimizationSetting
 
 from ctypes import windll, WINFUNCTYPE, c_bool, c_int
 from ctypes.wintypes import UINT
+
 WM_HOTKEY = 0x0312
 KEY_F5    = 7602176
 KEY_F2    = 7405568
@@ -122,7 +123,7 @@ class BasicDialog(QWidget):
 
     #----------------------------------------------------------------------
     def gridAddLineEditV(self,gridlayout,name,index):
-        """新增一行"""
+        """新增一列"""
         label = QLabel(name)
         ledit = QLineEdit()
         gridlayout.addWidget(label, 0, index)
@@ -131,7 +132,7 @@ class BasicDialog(QWidget):
 
     #----------------------------------------------------------------------
     def gridAddComboBoxV(self,gridlayout,name,listItems,index):
-        """新增一行"""
+        """新增一列"""
         label = QLabel(name)
         lcbox = QComboBox()
         lcbox.addItems(listItems)
@@ -161,6 +162,13 @@ class BasicDialog(QWidget):
         hbox.addWidget(self.buttonClose)
 
         vbox.addLayout(hbox)
+
+    #重载方法keyPressEvent(self,event),即按键按下事件方法
+    #----------------------------------------------------------------------
+    def keyPressEvent(self, event):
+        if event.key() == QtCore.Qt.Key_Enter:
+            self.OnButtonEdit()
+        event.accept()
 
     #----------------------------------------------------------------------
     def OnButtonEdit(self):                                           
@@ -286,16 +294,13 @@ class InfoInputWidget(BasicDialog):
                     stop  = eval(str(self.stopEdit[name].text()))
                     optimizationSetting.addParameter(name, start, stop, step)
         optimizationSetting.setOptimizeTarget('capital')
-        if str(self.parent.modeType.currentText()) == 'TICK':
-            mode = 'T'
-        else:
-            mode = 'B'
+        mode = self.parent.getBtMode()
         self.ctaEngine.optimizeStrategy(self.name,optimizationSetting,startTime,endTime,sp,mode)
         self.close()
 
 ########################################################################
 class RollingInputWidget(BasicDialog):
-    """参数扫描对话框"""
+    """滚动优化回测对话框"""
 
     ctaEngine = None
     name = ''
@@ -374,11 +379,50 @@ class RollingInputWidget(BasicDialog):
                     stop  = eval(str(self.stopEdit[name].text()))
                     optimizationSetting.addParameter(name, start, stop, step)
         optimizationSetting.setOptimizeTarget('capital')
-        if str(self.parent.modeType.currentText()) == 'TICK':
-            mode = 'T'
-        else:
-            mode = 'B'
+        mode = self.parent.getBtMode()
         self.ctaEngine.backtestRollingStrategy(self.name,optimizationSetting,startTime,endTime,rdays,sp,mode)
+        self.close()
+
+########################################################################
+class SplitInputWidget(BasicDialog):
+    """分段回测对话框"""
+
+    ctaEngine = None
+    name = ''
+
+    #----------------------------------------------------------------------
+    def __init__(self, name, ctaEngine, parent=None):
+        """Constructor"""
+        super(SplitInputWidget, self).__init__(parent)
+        self.parent = parent
+        self.ctaEngine = ctaEngine
+        self.name = name
+        self.initUi()
+
+    #----------------------------------------------------------------------
+    def initUi(self):
+        """"""
+        QWidget.__init__(self)         # 调用父类初始化方法
+        self.setWindowTitle(u'设置参数')
+        self.resize(275, 205)                 # 设置窗口大小
+        gridlayout = QGridLayout()     # 创建布局组件
+        rdaysLabel  = QLabel(u'分段日期')
+        self.rdaysEdit = QLineEdit()
+        gridlayout.addWidget(rdaysLabel, 0, 0 )            
+        gridlayout.addWidget(self.rdaysEdit, 0,  1)   
+        vbox = QVBoxLayout()
+        vbox.addLayout(gridlayout)
+        self.addButton(vbox)
+        self.setLayout(vbox)                                    
+
+    #----------------------------------------------------------------------
+    def OnButtonEdit(self):                                           # 按钮插槽函数
+        startTime = str(self.parent.startEdit.text())
+        endTime   = str(self.parent.endEdit.text())
+        sp        = eval(str(self.parent.spEdit.text()))
+        rdays     = eval(str(self.rdaysEdit.text()))
+        mode      = self.parent.getBtMode()
+        self.ctaEngine.backtestSplitStrategy(self.name,startTime,endTime,rdays,sp,mode)
         self.close()
 
 ########################################################################

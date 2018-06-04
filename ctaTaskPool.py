@@ -23,10 +23,10 @@ def optimizeB(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimism =
 
 # 含日志回测单个策略
 #---------------------------------------------------------------------------------------
-def backtestingE(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimism = False, mode = 'T', q = False):
+def backtestingE(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimism = False, mode = 'T', q = False, plot = True):
     """回测单个策略"""
     try:
-        return backtesting(setting_bt, StartTime, EndTime, slippage, optimism, mode, q)
+        return backtesting(setting_bt, StartTime, EndTime, slippage, optimism, mode, q, plot=plot)
     except Exception, e:
         print(u'回测策略出错：%s' %e)
         print 'traceback.print_exc():'; traceback.print_exc()
@@ -34,10 +34,10 @@ def backtestingE(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimis
 
 # 使用C++引擎回测单个策略
 #---------------------------------------------------------------------------------------
-def backtestingC(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimism = False, mode = 'T', q = False):
+def backtestingC(setting_bt, StartTime = '', EndTime = '', slippage = 0, optimism = False, mode = 'T', q = False, plot = True):
     """回测单个策略"""
     try:
-        return backtesting(setting_bt, StartTime, EndTime, slippage, optimism, mode, q, runmode='CPP')
+        return backtesting(setting_bt, StartTime, EndTime, slippage, optimism, mode, q, runmode='CPP', plot=plot)
     except Exception, e:
         print(u'回测策略出错：%s' %e)
         print 'traceback.print_exc():'; traceback.print_exc()

@@ -135,7 +135,6 @@ class TaskParamButton(QPushButton):
         self.__class__.tp = TaskParamWidget(param)
         self.__class__.tp.show()
 
-
 ########################################################################
 class TaskTable(QTableWidget):
     """任务管理组件"""
@@ -156,6 +155,7 @@ class TaskTable(QTableWidget):
                    u'策略类',
                    u'耗时',
                    u'模式',
+                   u'起止时间',
                    u'状态',
                    u'参数',
                    u'日志',
@@ -163,11 +163,21 @@ class TaskTable(QTableWidget):
 
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
-        self.horizontalHeader().setResizeMode(QHeaderView.Stretch)
+        self.horizontalHeader().setResizeMode(QHeaderView.Interactive)
+        self.setColumnWidth(0, 100)
+        self.setColumnWidth(1, 150)
+        self.setColumnWidth(2, 200)
+        self.setColumnWidth(3, 100)
+        self.setColumnWidth(4, 350)
+        self.setColumnWidth(5, 100)
+        self.setColumnWidth(6, 150)
+        self.setColumnWidth(7, 150)
+        self.setColumnWidth(8, 150)
         
         self.verticalHeader().setVisible(False)
         self.setEditTriggers(self.NoEditTriggers)
-        self.setSortingEnabled(True)
+        self.setSortingEnabled(False)
+        self.setSelectionBehavior(QTableWidget.SelectRows)
         
     #----------------------------------------------------------------------
     def initCells(self):
@@ -182,6 +192,8 @@ class TaskTable(QTableWidget):
             cellTaskTime  = QTableWidgetItem(str(task.runTM))
             cellTaskRunM  = QTableWidgetItem(task.runmode)
             cellStrCls    = QTableWidgetItem(task.setting.get('className'))
+            timeStr = ' ~ '.join([task.setting.get('StartTime'),task.setting.get('EndTime')])
+            cellStrTime   = QTableWidgetItem(timeStr)
             buttonActive  = TaskActiveButton(name)
             buttonParam   = TaskParamButton(name)
             buttonDisplay = TaskDisplayButton(name)
@@ -191,10 +203,11 @@ class TaskTable(QTableWidget):
             self.setItem(row, 1, cellStrCls)
             self.setItem(row, 2, cellTaskTime)
             self.setItem(row, 3, cellTaskRunM)
-            self.setCellWidget(row, 4, buttonActive)
-            self.setCellWidget(row, 5, buttonParam)
-            self.setCellWidget(row, 6, buttonLog)
-            self.setCellWidget(row, 7, buttonDisplay)
+            self.setItem(row, 4, cellStrTime)
+            self.setCellWidget(row, 5, buttonActive)
+            self.setCellWidget(row, 6, buttonParam)
+            self.setCellWidget(row, 7, buttonLog)
+            self.setCellWidget(row, 8, buttonDisplay)
             
             self.buttonActiveDict[name] = buttonActive
             row += 1
@@ -210,6 +223,39 @@ class TaskTable(QTableWidget):
         """清空所有"""
         ctaTaskPool.taskPool.allTask = {}
         self.initCells()
+
+    #----------------------------------------------------------------------
+    def showAll(self):
+        """合并显示所有"""
+        from ctaBacktesting import showBtResult
+        allres = None
+        def mergeBtRes(d0,d1):
+            d = {}
+            cap0 = d0['capitalList'][-1]
+            ddn0 = d0['drawdownList'][-1]
+            d['name'] = 'res'
+            d['stTime'] = d0['stTime']
+            d['capital'] = d0['capital']+d1['capital']
+            d['maxCapital'] = max(d0['maxCapital'],cap0+d1['maxCapital'])
+            d['drawdown'] = d0['drawdown']+d1['drawdown']
+            d['totalResult'] = d0['totalResult']+d1['totalResult']
+            d['totalTurnover'] = d0['totalTurnover']+d1['totalTurnover']
+            d['totalCommission'] = d0['totalCommission']+d1['totalCommission']
+            d['totalSlippage'] = d0['totalSlippage']+d1['totalSlippage']
+            d['timeList'] = d0['timeList']+d1['timeList']
+            d['pnlList'] = d0['pnlList']+d1['pnlList']
+            d['capitalList'] = d0['capitalList']+[c+cap0 for c in d1['capitalList']]
+            d['drawdownList'] = d0['drawdownList']+[c+ddn0 for c in d1['drawdownList']]
+            d['winningRate'] = (d0['winningRate']*d0['totalResult']+d1['winningRate']*d1['totalResult'])/d['totalResult']
+            d['averageWinning']  = (d0['winningRate']*d0['averageWinning']*d0['totalResult']+d1['winningRate']*d1['averageWinning']*d1['totalResult'])/d['totalResult']
+            d['averageLosing']   = ((1-d0['winningRate'])*d0['averageLosing']*d0['totalResult']+(1-d1['winningRate'])*d1['averageLosing']*d1['totalResult'])/d['totalResult']
+            d['profitLossRatio'] = d['averageWinning']/d['averageLosing']
+            d['resList'] = d0['resList']+d1['resList']
+            return d
+        results = [td.results for td in ctaTaskPool.taskPool.allTask.values() if td.results.get('timeList',[])]
+        allres = reduce(mergeBtRes,sorted(results,key=lambda d:d['stTime']))
+        if allres: showBtResult(allres)
+
 
 ########################################################################
 class TaskManager(QWidget):
@@ -237,9 +283,13 @@ class TaskManager(QWidget):
         buttonClearAll = QPushButton(u'清空所有')
         buttonClearAll.setObjectName(_fromUtf8('blueButton'))
         buttonClearAll.clicked.connect(self.taskTab.clearAll)
+        buttonShowAll = QPushButton(u'连续显示')
+        buttonShowAll.setObjectName(_fromUtf8('greenButton'))
+        buttonShowAll.clicked.connect(self.taskTab.showAll)
         hbox11 = QHBoxLayout()     
         hbox11.addWidget(buttonStopAll)
         hbox11.addWidget(buttonClearAll)
+        hbox11.addWidget(buttonShowAll)
         hbox11.addStretch()
         
         grid = QVBoxLayout()

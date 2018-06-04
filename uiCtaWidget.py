@@ -417,6 +417,7 @@ class StrategyParamManager(BasicDialog):
         self.widgetDict['ssetW'] = {}
         self.widgetDict['infoW'] = {}
         self.widgetDict['rollingW'] = {}
+        self.widgetDict['splitW'] = {}
 
         self.initUi()  
         self.registerEvent()
@@ -452,6 +453,7 @@ class StrategyParamManager(BasicDialog):
 
         hbox = QHBoxLayout()     
         self.hboxAddButton(hbox,u'回测','redButton',self.backtest)
+        self.hboxAddButton(hbox,u'分段回测','blueButton',self.splitBt)
         self.hboxAddButton(hbox,u'全部回测','redButton',self.btAll)
         self.hboxAddButton(hbox,u'参数扫描','blueButton',self.optimize)
         self.hboxAddButton(hbox,u'滚动优化','greenButton',self.rollingOp)
@@ -559,6 +561,16 @@ class StrategyParamManager(BasicDialog):
             self.widgetDict['rollingW'][self.name].show()
 
     #----------------------------------------------------------------------
+    def splitBt(self,name):
+        """启动滚动优化回测"""
+        if self.name is None: return
+        try:
+            self.widgetDict['splitW'][self.name].show()
+        except KeyError:
+            self.widgetDict['splitW'][self.name] = SplitInputWidget(self.name,self.ctaEngine,self)
+            self.widgetDict['splitW'][self.name].show()
+
+    #----------------------------------------------------------------------
     def switchMode(self):
         """切换回测模式"""
         if not self.ctaEngine.optimism:
@@ -589,10 +601,6 @@ class StrategyBtManager(BasicDialog):
         self.master = master
         self.name = None
 
-        self.widgetDict = {}
-        self.widgetDict['bktW'] = {}
-        self.widgetDict['infoW'] = {}
-        self.widgetDict['rollingW'] = {}
         
         self.initUi()  
 
@@ -626,7 +634,6 @@ class StrategyBtManager(BasicDialog):
         vbox.addLayout(hbox)
         vbox.addWidget(self.tbView)
         self.setLayout(vbox)
-
 
     #----------------------------------------------------------------------
     def showStrategy(self,index):

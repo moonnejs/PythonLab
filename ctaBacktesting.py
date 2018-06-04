@@ -10,6 +10,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import os
+import re
 import csv
 import json
 import copy
@@ -21,6 +22,7 @@ import threading
 import multiprocessing
 import pandas as pd
 import matplotlib
+import ctaSetting
 matplotlib.use('Qt4Agg')
 
 from itertools import product
@@ -35,6 +37,13 @@ from ctaBase import *
 from vtConstant import *
 
 from vtObject import VtOrderData, VtTradeData
+
+g_symbol_infos = []
+g_data_infos = []
+with open("./json/ContractInfo.json") as f:
+     g_symbol_infos = json.load(f)
+with open("./json/DATA_setting.json") as f:
+     g_data_infos =  json.load(f)
 
 #----------------------------------------------------------------------
 def loadMongoSetting(path=""):
@@ -98,7 +107,7 @@ class CppEngine(CppBt):
         trade.tradeID = str(self.btEngine.tradeCount)
         trade.dt = datetime.fromtimestamp(trade.ctime)
         trade.vtOrderID = trade.orderID
-        trade.tradeTime = str(datetime.fromtimestamp(trade.ctime))
+        trade.tradeTime = datetime.fromtimestamp(trade.ctime).strftime("%Y-%m-%d %H:%M:%S")
         trade.offset = self.offsetMap.get(trade.offsetcpp)
         trade.direction = self.dirMap.get(trade.directioncpp)
         self.btEngine.strategy.onTrade(trade)
@@ -150,6 +159,7 @@ class PyEngine(object):
         self.shfe = True                            # 上期所  
         self.fast = False                           # 是否支持排队
 
+
         self.symbolList = []                        # 用到的所有合约
         
         self.size = {}                              # 合约大小，默认为1        
@@ -161,8 +171,6 @@ class PyEngine(object):
         self.dbCursor_count = {}                    # 数据库大小
         
         self.backtestingData = {}                   # 回测用的数据,deque([])
-        self.savedata =  False                      # 保存外部数据
-        self.datas =  None                          # 外部数据
 
         self.dataStartDate = None                   # 回测数据开始日期，datetime对象
         self.dataEndDate = None                     # 回测数据结束日期，datetime对象
@@ -940,21 +948,30 @@ class BacktestingEngine(object):
     Version = 20170928
 
     #----------------------------------------------------------------------
-    def __init__(self,optimism=False):
+    def __init__(self,optimism=False,runmode=None):
         """Constructor"""
         # 回测相关
         self.strategy = None                        # 回测策略
         self.mode = self.BAR_MODE                   # 回测模式，默认为K线
         self.runmode = self.PYTHON_MODE
-        self.shfe = True                            # 上期所  
-        self.fast = False                           # 是否支持排队
+        
+        if runmode==self.CPP_MODE:
+            self.cppEngine = CppEngine("")
+            self.cppEngine.setBtEngine(self)
+            self.pyEngine = None
+            self.setRunMode(runmode)
+        elif runmode==self.PYTHON_MODE:
+            self.cppEngine = None
+            self.pyEngine = PyEngine()
+            self.pyEngine.setBtEngine(self)
+            self.setRunMode(runmode)
+        else:
+            self.cppEngine = CppEngine("")
+            self.cppEngine.setBtEngine(self)
+            self.pyEngine = PyEngine()
+            self.pyEngine.setBtEngine(self)
 
-        self.cppEngine = CppEngine("")
-        self.cppEngine.setBtEngine(self)
-
-        self.pyEngine = PyEngine()
-        self.pyEngine.setBtEngine(self)
-
+        self.dataStartDate = None                   # 回测开始时间
         self.plot = True                            # 打印数据
         self.plotfile = False                       # 打印到文件
         self.optimism = False                       # 高速回测模式
@@ -969,41 +986,16 @@ class BacktestingEngine(object):
         self.size = {}                              # 合约大小，默认为1        
         self.mPrice = {}                            # 最小价格变动，默认为1        
         
-        self.dbClient = None                        # 数据库客户端
-        self.dbCursor = {}                          # 数据库指针
-        self.index = {}                             # 指针当前位置
-        self.dbCursor_count = {}                    # 数据库大小
-        
-        self.backtestingData = {}                   # 回测用的数据,deque([])
         self.savedata =  False                      # 保存外部数据
         self.datas =  None                          # 外部数据
-
-        self.dataStartDate = None                   # 回测数据开始日期，datetime对象
-        self.dataEndDate = None                     # 回测数据结束日期，datetime对象
-        self.strategyStartDate = None               # 策略启动日期（即前面的数据用于初始化），datetime对象
-
-        # 本地停止单
-        self.stopOrderCount = 0                     # 编号计数：stopOrderID = STOPORDERPREFIX + str(stopOrderCount)
-        
-        self.stopOrderDict = {}                     # 停止单撤销后不会从本字典中删除
-        self.workingStopOrderDict = {}              # 停止单撤销后会从本字典中删除
-        
-        self.limitOrderDict = OrderedDict()         # 限价单字典
-        self.workingLimitOrderDict = OrderedDict()  # 活动限价单字典，用于进行撮合用
-        self.limitOrderCount = 0                    # 限价单编号
 
         self.tradeCount = 0                         # 成交编号
         self.tradeDict = defaultdict(OrderedDict)   # 成交字典 OrderedDict()
         
         self.tradeSnap = OrderedDict()              # 合约市场快照
 
-        self.dataClass = None                       # 使用的数据类
-
         self.logList = []                           # 日志记录
         self.tradeList = []                         # 成交记录
-
-        self.orderPrice = {}                        # 合约限价单价格
-        self.orderVolume = {}                       # 合约限价单盘口
 
         self.dataBar = []                           # 需要推送的K线数据
         self.dataState = []                         # 需要推送的状态数据
@@ -1018,12 +1010,15 @@ class BacktestingEngine(object):
         self.deal = 0                               # 当前策略平仓
             
         # 当前最新数据，用于模拟成交用
-        self.tick = {}                              # 当前tick
-        self.lasttick = {}                          # 上一个tick
-        self.bar = {}                               # 当前bar
-        self.lastbar = {}                           # 上一个bar
         self.dt = None                              # 最新的时间
 
+
+    #----------------------------------------------------------------------
+    def setRunMode(self, runmode):
+        """
+        设置运行模式, C++ or Python
+        """
+        self.runmode = runmode
 
     #----------------------------------------------------------------------
     def setOpt(self, optimism):
@@ -1064,6 +1059,8 @@ class BacktestingEngine(object):
     def setStartDate(self, startDate='20100416', initDays=10):
         """设置回测的启动日期
            支持两种日期模式"""
+        self.dataStartDate = datetime.strptime(startDate, '%Y%m%d') if len(startDate) == 8\
+             else datetime.strptime(startDate, '%Y%m%d %H:%M:%S')
         if self.runmode == self.CPP_MODE:
             self.cppEngine.setStartTime(startDate)
         else:
@@ -1118,6 +1115,7 @@ class BacktestingEngine(object):
                 lastOpen = i
             if self.dataDealOpen[i] != 0:
                 lastOpen = i
+
         # 推送结果
         self.datas = {'bar':self.dataBar,
                       'state':self.dataState,
@@ -1310,6 +1308,7 @@ class BacktestingEngine(object):
         # 返回回测结果
         d = {}
         d['name']            = self.strategy.name
+        d['stTime']          = self.dataStartDate
         d['capital']         = round(capital,2)
         d['maxCapital']      = maxCapital
         d['drawdown']        = drawdown
@@ -1608,44 +1607,12 @@ class BacktestingEngine(object):
     #----------------------------------------------------------------------
     def loadTick(self, dbName, collectionName, days):
         """从数据库中读取Tick数据，startDate是datetime对象"""
-        startDate = self.dataStartDate
-        
-        d = {'datetime':{'$lte':startDate}}
-        host, port = loadMongoSetting()
-        client = pymongo.MongoClient(host,port)
-        collection = client[dbName][collectionName]
-
-        cursor = collection.find(d).limit(days*10*60*120)
-
-        l = []
-        if cursor:
-            for d in cursor:
-                tick = CtaTickData()
-                tick.__dict__ = d
-                l.append(tick)
-        
-        return l    
+        pass
 
     #----------------------------------------------------------------------
     def loadBar(self, dbName, collectionName, days):
         """从数据库中读取Tick数据，startDate是datetime对象"""
-        startDate = self.dataStartDate
-        
-        d = {'datetime':{'$lte':startDate}}
-        host, port = loadMongoSetting()
-        client = pymongo.MongoClient(host,port)
-        collection = client[dbName][collectionName]
-
-        cursor = collection.find(d).limit(days*10*60)
-
-        l = []
-        if cursor:
-            for d in cursor:
-                bar = CtaBarData()
-                bar.__dict__ = d
-                l.append(bar)
-        
-        return l    
+        pass
 
     #----------------------------------------------------------------------
     def clearBacktestingResult(self):
@@ -1798,7 +1765,6 @@ def showBtResult(d,filepath=None):
     pnlList = d['pnlList']
     capitalList = d['capitalList']
     drawdownList = d['drawdownList']
-    
 
     print(u'显示回测结果')
     # 输出
@@ -1933,34 +1899,31 @@ def formatNumber(n):
 #---------------------------------------------------------------------------------------
 def getDbByMode(mode):
     """获取合约信息"""
-    with open("./json/DATA_setting.json") as f:
-        for setting in json.load(f):
-             mode0 = setting[u'mode']
-             if mode in mode0:
-                 return setting[u'dbname']
+    for setting in g_data_infos:
+         mode0 = setting[u'mode']
+         if mode in mode0:
+             return setting[u'dbname']
     return "VnTrader_1Min_Db"
 
 #---------------------------------------------------------------------------------------
 def getSymbolInfo(symbolList):
     """获取合约信息"""
-    import re
     rate  = {}
     fee   = {}
     price = {}
     size  = {}
     level = {}
-    with open("./json/ContractInfo.json") as f:
-        for setting in json.load(f):
-             name = setting[u'name']
-             for symbol in symbolList:
-                match  = re.search('^'+name+'[0-9]',symbol)
-                match0 = re.search('^'+name+'$',symbol)
-                if match or match0:
-                    rate[symbol]  = setting[u'mRate']
-                    size[symbol]  = setting[u'mSize']
-                    fee[symbol]   = setting[u'mFee']
-                    price[symbol] = setting[u'mPrice']
-                    level[symbol] = setting[u'mLevel']
+    for setting in g_symbol_infos:
+         name = setting[u'name']
+         for symbol in symbolList:
+            match  = re.search('^'+name+'[0-9]',symbol)
+            match0 = re.search('^'+name+'$',symbol)
+            if match or match0:
+                rate[symbol]  = setting[u'mRate']
+                size[symbol]  = setting[u'mSize']
+                fee[symbol]   = setting[u'mFee']
+                price[symbol] = setting[u'mPrice']
+                level[symbol] = setting[u'mLevel']
 
     for symbol in symbolList:
         if symbol not in rate:
@@ -1983,9 +1946,6 @@ def getSymbolInfo(symbolList):
 #---------------------------------------------------------------------------------------
 def backtestingRolling(setting_c, optimizationSetting, StartTime = '', EndTime = '', RollingDays=20, slippage = 0, optimism = False, mode = 'T', savedata = False):
     """滚动优化回测"""
-    import sys
-    import ctaSetting
-    reload(ctaSetting)
     className = setting_c[u'className']
     STRATEGY_CLASS = ctaSetting.STRATEGY_CLASS
 
@@ -2019,8 +1979,6 @@ def backtestingRolling(setting_c, optimizationSetting, StartTime = '', EndTime =
     StartTime = str(setting_c[u'StartTime']) if not StartTime else StartTime 
     if not EndTime:
         EndTime = str(setting_c[u'EndTime'])
-
-    setting_c[u'backtesting'] = True
 
     # 设置产品相关参数
     engine.setSlippage(slippage,symbolList)     # 滑点
@@ -2056,26 +2014,21 @@ def backtestingRolling(setting_c, optimizationSetting, StartTime = '', EndTime =
     return setting_c,d
 
 #---------------------------------------------------------------------------------------
-def backtesting(setting_c, StartTime = '', EndTime = '', slippage = 0, optimism = False, mode = 'T', savedata = False, runmode= 'PY'):
+def backtesting(setting_c, StartTime = '', EndTime = '', slippage = 0, optimism = False, mode = 'T', savedata = False, runmode= 'PY', plot = True):
     """简单回测"""
-    setting_c[u'backtesting'] = True
-    import ctaSetting
-    reload(ctaSetting)
     className = setting_c[u'className']
     STRATEGY_CLASS = ctaSetting.STRATEGY_CLASS
     symbolList = eval(str(setting_c[u'symbolList']))
     rate,fee,price,size,level = getSymbolInfo(symbolList)
 
-    engine=BacktestingEngine()
-
+    engine=BacktestingEngine(runmode=runmode)
     if mode[0] == 'T':
         engine.setBacktestingMode(engine.TICK_MODE)
-        engine.runmode = runmode
     elif mode[0] == 'B':
         engine.setBacktestingMode(engine.BAR_MODE)
         engine.savedata = savedata
     dbName = getDbByMode(mode)
-    engine.plot = True
+    engine.plot = plot
     engine.setOpt(optimism)
 
     # 设置回测用的数据起始日期
@@ -2106,20 +2059,17 @@ def backtesting(setting_c, StartTime = '', EndTime = '', slippage = 0, optimism 
     return setting_c,d
 
 #----------------------------------------------------------------------
-def optimize(setting_c, setting,  startTime='', endTime='', slippage=0, optimism=False, mode = 'T'):
+def optimize(setting_c, setting,  startTime='', endTime='', slippage=0, optimism=False, mode = 'T', runmode='PY'):
     """多进程优化时跑在每个进程中运行的函数"""
     try:
-        from ctaBacktesting import BacktestingEngine
         setting_c[u'backtesting'] = True
-        import ctaSetting
-        reload(ctaSetting)
         className = setting_c[u'className']
         STRATEGY_CLASS = ctaSetting.STRATEGY_CLASS
 
         symbolList = eval(str(setting_c[u'symbolList']))
         rate,fee,price,size,level = getSymbolInfo(symbolList)
             
-        engine=BacktestingEngine()
+        engine=BacktestingEngine(runmode=runmode)
         engine.plot = False
         engine.setOpt(optimism)
 
@@ -2128,7 +2078,6 @@ def optimize(setting_c, setting,  startTime='', endTime='', slippage=0, optimism
             engine.setBacktestingMode(engine.TICK_MODE)
         elif mode[0] == 'B':
             engine.setBacktestingMode(engine.BAR_MODE)
-            #engine.savedata = savedata
         dbName = getDbByMode(mode)
         
         # 设置回测用的数据起始日期

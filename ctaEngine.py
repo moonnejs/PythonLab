@@ -6,6 +6,7 @@
 
 import os
 import time
+import copy
 import json
 import pymongo
 import ctaTaskPool
@@ -14,7 +15,7 @@ import traceback
 import multiprocessing
 
 
-from datetime import datetime
+from datetime import datetime,timedelta
 from collections import OrderedDict
 from eventEngine import *
 
@@ -94,23 +95,6 @@ class CtaEngine(object):
 		    self.callStrategyFunc(strategy, strategy.onUpdate,setting)
     
     #----------------------------------------------------------------------
-    def callStrategyFunc(self, strategy, func, params=None):
-        """调用策略的函数，若触发异常则捕捉"""
-        try:
-            if params:
-                func(params)
-            else:
-                func()
-        except Exception:
-            # 停止策略，修改状态为未初始化
-            strategy.trading = False
-            strategy.inited = False
-            
-            # 发出日志
-            content = '\n'.join([u'策略%s触发异常已停止' %strategy.name,traceback.format_exc()])
-            self.writeCtaLog(content)
-  
-    #----------------------------------------------------------------------
     def backtestStrategy(self, name, startTime = '20161001', endTime = '20161030', slippage = 0, mode = 'T'):
         """回测单个策略"""
 	setting_bt = {}
@@ -119,6 +103,8 @@ class CtaEngine(object):
             for setting in l:
 	        if setting[u'name'] == name:
 	            setting_bt = setting
+        setting_bt['StartTime'] = startTime
+        setting_bt['EndTime'] = endTime
         q = True if mode[0:2] == 'BV' else False
         xmode = 'bt-perf' if mode[0:2] in ['BP','TP'] else 'bt-f' 
         xmode = 'bt-c' if mode[0:2] in ['BC','TC'] else xmode 
@@ -126,7 +112,22 @@ class CtaEngine(object):
 
     #----------------------------------------------------------------------
     def backtestRollingStrategy(self, name, optimizationSetting, startTime = '20161001', endTime = '20161030', rollingDays=20, slippage = 0, mode = 'T'):
-        """回测单个策略"""
+        """滚动优化回测单个策略"""
+	setting_bt = {}
+        with open(self.settingFileName) as f:
+            l = json.load(f)
+            for setting in l:
+	        if setting[u'name'] == name:
+	            setting_bt = setting
+        setting_bt['StartTime'] = startTime
+        setting_bt['EndTime'] = endTime
+        q = True if mode == 'BV' else False
+        ctaTaskPool.backtestingRollingE(setting_bt, optimizationSetting, startTime, endTime, rollingDays, slippage, self.optimism, mode, q)
+    	self.putStrategyEvent(name)
+
+    #----------------------------------------------------------------------
+    def backtestSplitStrategy(self, name, startTime = '20161001', endTime = '20161030', splitDays=20, slippage = 0, mode = 'T'):
+        """分段回测单个策略"""
 	setting_bt = {}
         with open(self.settingFileName) as f:
             l = json.load(f)
@@ -134,9 +135,27 @@ class CtaEngine(object):
 	        if setting[u'name'] == name:
 	            setting_bt = setting
         q = True if mode == 'BV' else False
-        ctaTaskPool.backtestingRollingE(setting_bt, optimizationSetting, startTime, endTime, rollingDays, slippage, self.optimism, mode, q)
-    	self.putStrategyEvent(name)
-
+        xmode = 'bt-perf' if mode[0:2] in ['BP','TP'] else 'bt-f' 
+        xmode = 'bt-c' if mode[0:2] in ['BC','TC'] else xmode 
+        # 生成分段回测序列
+        dataStartDate = datetime.strptime(startTime, '%Y%m%d') if len(startTime) == 8\
+                            else datetime.strptime(startTime, '%Y%m%d %H:%M:%S')
+        dataEndDate   = datetime.strptime(endTime, '%Y%m%d') if len(endTime) == 8\
+                            else datetime.strptime(endTime, '%Y%m%d %H:%M:%S')
+        timeList = deque([])
+        dataStepDate = dataStartDate
+        while dataStepDate+timedelta(days=splitDays) <= dataEndDate:
+            dataStepDate += timedelta(days=splitDays)
+            timeList.append(dataStepDate)
+        timeList.append(dataEndDate)
+        dtSt = dataStartDate.strftime('%Y%m%d')
+        while timeList:
+            # 设置回测用的数据起始日期
+            dtEd = timeList.popleft().strftime('%Y%m%d')
+            setting_bt['StartTime'] = dtSt
+            setting_bt['EndTime'] = dtEd
+            t = ctaTaskPool.taskPool.addTask('bt',args=(copy.deepcopy(setting_bt), dtSt, dtEd, slippage, self.optimism, mode, q, False), mode = xmode, runmode = mode)
+            dtSt = dtEd
 
     #----------------------------------------------------------------------
     def optimizeStrategy(self, name, optimizationSetting, startTime = '20161001', endTime = '20161030', slippage = 0, mode='T'):
