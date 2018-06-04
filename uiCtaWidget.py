@@ -447,7 +447,7 @@ class StrategyParamManager(BasicDialog):
         self.btView.setModel(self.modelP)  
           
         self.btView.horizontalHeader().setStretchLastSection(True)
-        self.btView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.btView.horizontalHeader().setResizeMode(QHeaderView.Stretch)
         self.btView.setEditTriggers(QTableWidget.NoEditTriggers)
         self.btView.setSelectionBehavior(QTableWidget.SelectRows)
 
