@@ -608,7 +608,7 @@ class PyEngine(object):
             currentTurnOver = tick.turnover - lasttick.turnover
             pOnAsk = lasttick.askPrice1
             pOnBid = lasttick.bidPrice1
-        
+
         if lasttick and currentVolume > 0: 
             currentPrice = currentTurnOver/currentVolume/size
             ratio = (currentPrice-lasttick.bidPrice1)/(lasttick.askPrice1-lasttick.bidPrice1)
@@ -796,7 +796,8 @@ class PyEngine(object):
                         volumeTraded = min(volumeTraded, tick.askVolume1) if buyCross \
                                   else min(volumeTraded, tick.bidVolume1)
                     elif self.mode == self.BAR_MODE:
-                        volumeTraded = min(volumeTraded, bar.volume)
+                        barV = bar.volume/2
+                        volumeTraded = min(volumeTraded, barV)
                     volumeTraded = max(volumeTraded,1)
 
                     # 计算成交价
