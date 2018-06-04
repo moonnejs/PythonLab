@@ -24,8 +24,7 @@ def getallfile(path):
             getallfile(filepath)
         allfile.append(filepath)
     return allfile
-
-pattern = re.compile(r"[^\s]*.py$")
+pattern = re.compile(r"[^*]*.py$")
 # 导入所有策略
 ALL_STRATEGIES = []
 strategyPath = os.getcwd() + '/strategy/'
